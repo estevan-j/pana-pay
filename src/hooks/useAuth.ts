@@ -4,22 +4,27 @@ import { useKeycloak } from '@react-keycloak/web';
 const useAuth = () => {
     const { keycloak, initialized } = useKeycloak();
 
-    const isAuthenticated = keycloak?.authenticated || false;
+    // Safe access to keycloak properties with optional chaining
+    const isAuthenticated = initialized && keycloak?.authenticated || false;
 
     const login = () => {
-        if (keycloak) {
+        if (initialized && keycloak) {
             keycloak.login();
+        } else {
+            console.warn('Keycloak not initialized, cannot login');
         }
     };
     
     const logout = () => {
-        if (keycloak) {
+        if (initialized && keycloak) {
             keycloak.logout({ redirectUri: window.location.origin });
+        } else {
+            console.warn('Keycloak not initialized, cannot logout');
         }
     };
 
     const getUserInfo = () => {
-        if (isAuthenticated && keycloak.tokenParsed) {
+        if (isAuthenticated && keycloak?.tokenParsed) {
             return {
                 username: keycloak.tokenParsed?.preferred_username,
                 email: keycloak.tokenParsed?.email,
@@ -31,14 +36,14 @@ const useAuth = () => {
         return null;
     };
 
-    const getToken = () => keycloak?.token;
+    const getToken = () => initialized && keycloak ? keycloak.token : null;
 
     const hasRole = (role: string) => {
-        return keycloak?.hasRealmRole(role) || false;
+        return initialized && keycloak ? keycloak.hasRealmRole(role) || false : false;
     };
 
     // For DashboardPage.tsx
-    const user = keycloak?.tokenParsed?.preferred_username || 'Usuario';
+    const user = initialized && keycloak?.tokenParsed?.preferred_username || 'Usuario';
     const isAdmin = hasRole('admin');
 
     return {
