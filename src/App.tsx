@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import getKeycloakInstance from './config/KeycloakConfig';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import DashboardPage from './pages/DashboardPage';
+import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import KeycloakProvider from './context/KeycloakProvider';
 
@@ -18,7 +18,7 @@ function App() {
             path="/dashboard/*"
             element={
               <PrivateRoute>
-                <DashboardPage />
+                <Dashboard />
               </PrivateRoute>
             }
           />
