@@ -1,0 +1,3286 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Web Api PanaPay",
+    "description": "Esta API permite la interoperabilidad entre instituciones financieras dentro del ecosistema transaccional de Coonecta. Facilita la ejecución de operaciones bancarias en tiempo real, permitiendo a las entidades gestionar afiliaciones, consultas de cuenta, transferencias y seguimiento de transacciones de manera segura y eficiente.",
+    "contact": {
+      "name": "Equipo de Desarrollo - Coonecta",
+      "email": "soporte@coonecta.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/switchcentral/admin/afiliacion": {
+      "post": {
+        "tags": [
+          "Administration - Transacciones de Administración (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Este procedimiento permite que las instituciones financieras registren  la llave única y las credenciales de los usuarios para habilitar la recepción  de transferencias dentro del sistema. Este mensaje también habilita la opción  de actualizar los datos del usuario.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AffiliationRequest"
+              },
+              "example": {
+                "grpHdr": {
+                  "msgId": "0205202510210000000059",
+                  "creDtTm": "2025-01-20T10:15:30",
+                  "nbOfTxs": 1,
+                  "sttlmInf": {
+                    "sttlmMtd": "INGA"
+                  },
+                  "instgAgt": {
+                    "finInstnId": "0205"
+                  },
+                  "instdAgt": {
+                    "finInstnId": "0000"
+                  },
+                  "mge": {
+                    "type": "acmt.998.211.01"
+                  },
+                  "chnlId": "APP"
+                },
+                "acctEnroll": {
+                  "acct": {
+                    "nm": "RIVADENEIRA BEJARANO KEVIN MAURICIO",
+                    "docTp": "CDI",
+                    "docId": "1752635263",
+                    "acctTp": "10",
+                    "acctId": "22244651321681300"
+                  },
+                  "othr": {
+                    "cred": [
+                      {
+                        "id": "CEL",
+                        "value": "09######"
+                      }
+                    ]
+                  },
+                  "operationType": "AFIL"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Respuesta de afiliación exitosa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AffiliationResponse"
+                },
+                "example": {
+                  "grpHdr": {
+                    "msgId": "0205202510210000000060",
+                    "creDtTm": "2025-01-20T10:15:30",
+                    "nbOfTxs": 1,
+                    "sttlmInf": {
+                      "sttlmMtd": "INGA"
+                    },
+                    "instgAgt": {
+                      "finInstnId": "0205"
+                    },
+                    "instdAgt": {
+                      "finInstnId": "0000"
+                    },
+                    "mge": {
+                      "type": "acmt.998.212.01"
+                    },
+                    "chnlId": "APP"
+                  },
+                  "acctEnroll": {
+                    "orgnGrpInf": {
+                      "orgnlMsgId": "0205202510210000000059",
+                      "orgnlMsgNmId": "acmt.998.211.01",
+                      "orgnlCreDtTm": "2017-12-15T10:35:00"
+                    },
+                    "txSts": "OK",
+                    "rsn": {
+                      "rsnCd": "0000",
+                      "addtlInf": "Transacción exitosa"
+                    },
+                    "acct": {
+                      "IBAN": "EC1282055678901234567890"
+                    },
+                    "othr": {
+                      "cred": [
+                        {
+                          "id": "CQR",
+                          "value": "09ASDDS6354831SAD5315SAD435AS4DAS356D354897"
+                        }
+                      ]
+                    },
+                    "sttlmDt": "2025-01-10"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/admin/desafiliacion": {
+      "post": {
+        "tags": [
+          "Administration - Transacciones de Administración (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Permite remover a un usuario de una institución en la base de datos de la Plataforma transaccional, permitiendo dar de baja su llave única y credenciales asociadas al mismo en la plataforma transaccional Coonecta. Además, puede gestionar el bloqueo o desbloqueo de la cuenta del usuario para transaccionar.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisaffiliationRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000080",
+                  "CreDtTm": "2025-01-21T12:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0000"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "acmt.998.311.01"
+                  },
+                  "ChnlId": "APP"
+                },
+                "BlkUser": {
+                  "Acct": {
+                    "AcctId": "22244651321681300"
+                  },
+                  "CtrlInf": {
+                    "ActnTp": "DESA"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Respuesta de desafiliacion exitosa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisaffiliationResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000081",
+                    "CreDtTm": "2025-01-21T12:00:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0000"
+                    },
+                    "Mge": {
+                      "Type": "acmt.998.311.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "AcctEnroll": {
+                    "OrgnGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000080",
+                      "OrgnlMsgNmId": "acmt.998.311.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "0000",
+                      "AddtlInf": "TRANSACCIÓN EXITOSA"
+                    },
+                    "SttlmDt": "2025-01-10"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/admin/consulta_cuenta": {
+      "post": {
+        "tags": [
+          "Administration - Transacciones de Administración (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Este procedimiento permite a la entidad financiera consultar los datos vinculados al usuario mediante el envío del número de cuenta, retornando la información del usuario afiliado y sus credenciales vinculadas. \n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountConsultationRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000070",
+                  "CreDtTm": "2025-01-21T14:30:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0000"
+                  },
+                  "Mge": {
+                    "Type": "acmt.998.421.01"
+                  },
+                  "ChnlId": "APP"
+                },
+                "QryUsrByAcc": {
+                  "Acct": {
+                    "AcctId": "00051654132598",
+                    "AcctTp": "10"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountConsultationResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000071",
+                    "CreDtTm": "2025-01-21T14:30:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0000"
+                    },
+                    "Mge": {
+                      "Type": "acmt.998.422.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "QryUsrByAcc": {
+                    "OrgnGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000070",
+                      "OrgnlMsgNmId": "acmt.998.421.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "0001",
+                      "AddtlInf": "Consulta exitosa"
+                    },
+                    "Acct": {
+                      "Nm": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                    },
+                    "Cred": {
+                      "Value": "0984846831"
+                    },
+                    "InstAgt": [
+                      {
+                        "FinInstnId": "0266",
+                        "Nm": "CAPCECO",
+                        "IBAN": "EC1282055678901234567890"
+                      }
+                    ],
+                    "SttlmDt": "2025-01-10"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/admin/consulta_credencial": {
+      "post": {
+        "tags": [
+          "Administration - Transacciones de Administración (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Este procedimiento permite que la entidad financiera consulte la información del usuario registrado a partir de su credencial, donde se mostrará las entidades vinculadas a los usuarios y sus llaves únicas (IBAN).\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CredentialConsultationRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000090",
+                  "CreDtTm": "2025-01-21T15:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0000"
+                  },
+                  "Mge": {
+                    "Type": "acmt.998.441.01",
+                    "chnlld": "APP"
+                  }
+                },
+                "QryAccByCred": {
+                  "Cred": {
+                    "Id": "CEL",
+                    "Value": "0985653214"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CredentialConsultationResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000091",
+                    "CreDtTm": "2025-01-21T15:00:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0000"
+                    },
+                    "Mge": {
+                      "Type": "acmt.998.442.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "QryAccByCred": {
+                    "OrgnGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000090",
+                      "OrgnlMsgNmId": "acmt.998.441.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "0000",
+                      "AddtlInf": "Transacción exitosa"
+                    },
+                    "Acct": {
+                      "Nm": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                    },
+                    "Cred": {
+                      "Value": "0984846831"
+                    },
+                    "InstAgt": [
+                      {
+                        "FinInstnId": "0205",
+                        "Nm": "CAPCECO",
+                        "IBAN": "EC1282055678901234567890"
+                      },
+                      {
+                        "FinInstnId": "0206",
+                        "Nm": "BIBLIAN",
+                        "IBAN": "EC1282065678901234567890"
+                      }
+                    ],
+                    "SttlmDt": "2025-12-20"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/admin/consulta_status": {
+      "post": {
+        "tags": [
+          "Administration - Transacciones de Administración (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Este procedimiento permite consultar el estado de una transacción realizada por el usuario de la entidad a partir de su identificador sus campos clave para identificar la transacción. Para esto, cada entidad debe garantizar que el registro de transacciones con el campo “EndToEndId” debe ser único en el día.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultationStatusTransactionRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000123",
+                  "CreDtTm": "2025-01-21T16:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0000"
+                  },
+                  "Mge": {
+                    "Type": "acmt.998.511.01"
+                  },
+                  "ChnlId": "APP"
+                },
+                "CdtTrfTxInf": {
+                  "PmtId": {
+                    "EndToEndId": "02050000000123",
+                    "CreDtTm": "2025-01-02"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultationStatusTransactionResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000123",
+                    "CreDtTm": "2025-01-21T16:00:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0000"
+                    },
+                    "Mge": {
+                      "Type": "acmt.998.512.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "CdtTrfTxInf": {
+                    "PmtId": {
+                      "EndToEndId": "02050000000123",
+                      "TxId": "9876543210"
+                    },
+                    "IntrBkSttlmAmt": {
+                      "Amt": 22.5,
+                      "Ccy": "USD"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "0000",
+                      "AddtlInf": "TRANSACCIÓN EXITOSA"
+                    },
+                    "Dbtr": {
+                      "AuthCode": "968574"
+                    },
+                    "Cdtr": {
+                      "AuthCode": "227593"
+                    },
+                    "SttlmDt": "2025-01-20"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/finan/transferencia": {
+      "post": {
+        "tags": [
+          "Financial - Transacciones Financieras (Entidad financiera hacia Coonecta)"
+        ],
+        "description": "Proceso que gestiona los mensajes financieros relacionados con operaciones de débito y crédito, garantizando la transferencia de pagos entre usuarios de las dos entidades involucradas en la transacción.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "020500000000123",
+                  "CreDtTm": "2025-01-21T15:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "acmt.998.321.01"
+                  },
+                  "ChnlId": "APP"
+                },
+                "CdtTrfTxInf": {
+                  "PmtId": {
+                    "EndToEndId": "020500000000123"
+                  },
+                  "IntrBkSttlmAmt": {
+                    "Amt": 22.5,
+                    "Ccy": "USD"
+                  },
+                  "DbtrAcctId": {
+                    "IBAN": "EC1282055678901234567890"
+                  },
+                  "CdtrAcctId": {
+                    "IBAN": "EC1282060000000000222222"
+                  },
+                  "Prtry": {
+                    "CustRef": "Pago menestras",
+                    "ChanRef": "TERM001",
+                    "AgtRef": "AGT0002"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000060",
+                    "CreDtTm": "2025-01-21T12:00:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0206"
+                    },
+                    "Mge": {
+                      "Type": "acmt.998.322.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "CdtTrfTxInf": {
+                    "OrgnGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000059",
+                      "OrgnlMsgNmId": "acmt.998.321.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00"
+                    },
+                    "PmtId": {
+                      "EndToEndId": "020500000000123",
+                      "TxId": "9876543210"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "0000",
+                      "AddtlInf": "Transaccion Exitosa"
+                    },
+                    "Dbtr": {
+                      "AuthCode": "968574"
+                    },
+                    "Cdtr": {
+                      "AuthCode": "227593"
+                    },
+                    "SttlmDt": "2025-01-20"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/finan/debito": {
+      "post": {
+        "tags": [
+          "Financial - Transacciones Financieras (Coonecta hacia Entidad financiera)"
+        ],
+        "description": "El débito es la operación inicial que realiza un cargo en la cuenta del usuario de la entidad ordenante. Esta transacción es el primer paso de una transferencia y asegura que los fondos estén disponibles para el envío.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DebitRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "02050000000123",
+                  "CreDtTm": "2025-01-20T00:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "pacs.008.040.01"
+                  },
+                  "ChnlId": "WEB"
+                },
+                "CdtTrfTxInf": {
+                  "PmtId": {
+                    "EndToEndId": "02050000000123",
+                    "TxId": "9876543210"
+                  },
+                  "IntrBkSttlmAmt": {
+                    "Amt": "22.5",
+                    "Ccy": "USD"
+                  },
+                  "Dbtr": {
+                    "Nm": "RIVADENEIRA BEJARANO KEVIN MAURICIO",
+                    "Id": "1724672728",
+                    "SchmeNm": "CDI"
+                  },
+                  "DbtrAcctId": {
+                    "IBAN": "EC1282055678901234567890"
+                  },
+                  "Cdtr": {
+                    "Nm": "DURAN DE LA ROSA ESTEBAN ANDRES",
+                    "Id": "1720406080",
+                    "SchmeNm": "CDI"
+                  },
+                  "CdtrAcctId": {
+                    "IBAN": "EC1282060000000002222222"
+                  },
+                  "Prtry": {
+                    "CustRef": "Pago mensualidades",
+                    "ChanRef": "TERM001",
+                    "AgtRef": "AGT0002"
+                  },
+                  "SttlmDt": "2025-01-20"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DebitResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000059",
+                    "CreDtTm": "2017-12-15T10:35:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0206"
+                    },
+                    "Mge": {
+                      "Type": "pacs.002.040.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "TxInfAndSts": {
+                    "OrgnlGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000059",
+                      "OrgnlMsgNmId": "pacs.008.040.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00",
+                      "OrgnlEndToEndId": "02050000000123",
+                      "OrgnlTxId": "635247189362"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "000",
+                      "AddtlInf": "Transacción Exitosa"
+                    },
+                    "AuthCode": "968574"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/finan/reverso_debito": {
+      "post": {
+        "tags": [
+          "Financial - Transacciones Financieras (Coonecta hacia Entidad financiera)"
+        ],
+        "description": "El reverso de débito se genera automáticamente si ocurre un error en la operación original de débito, en los datos proporcionados, o si el crédito falla posteriormente. Este reverso garantiza que los fondos debitados sean restituidos a la cuenta del usuario usando un SAF para esto.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReverseDebitRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000060",
+                  "CreDtTm": "2025-01-21T10:35:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "pacs.007.040.01"
+                  },
+                  "ChnlId": "WEB"
+                },
+                "PmtRtr": {
+                  "OrgnlGrpInf": {
+                    "OrgnlMsgId": "0205202510210000000059",
+                    "OrgnlMsgNmId": "pacs.008.040.01",
+                    "OrgnlCreDtTm": "2025-01-20T10:00:00"
+                  },
+                  "PmtId": {
+                    "OrgnlEndToEndId": "02050000000123",
+                    "OrgnlTxId": "9876543210"
+                  },
+                  "IntrBkSttlmAmt": {
+                    "Amt": 22.5,
+                    "Ccy": "USD"
+                  },
+                  "TxSts": "OK",
+                  "RtrRsnInf": {
+                    "RsnCd": "000",
+                    "AddtlInf": "Reverso exitoso"
+                  },
+                  "CdtrAcctId": {
+                    "IBAN": "EC1282055678901234567890"
+                  },
+                  "SttlmDt": "2025-01-21"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReverseDebitResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000060",
+                    "CreDtTm": "2025-01-21T10:35:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0206"
+                    },
+                    "Mge": {
+                      "Type": "pacs.002.041.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "TxInfAndSts": {
+                    "OrgnGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000059",
+                      "OrgnlMsgNmId": "pacs.007.040.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00",
+                      "OrgnlEndToEndId": "02050000000123",
+                      "OrgnlTxId": "9876543210"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "000",
+                      "AddtlInf": "Transacción Exitosa"
+                    },
+                    "AcctSvcrRef": "086523"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/finan/credito": {
+      "post": {
+        "tags": [
+          "Financial - Transacciones Financieras (Coonecta hacia Entidad financiera)"
+        ],
+        "description": "Es la operación final en una transferencia y se encuentra detallado en el flujo de la operación de transferencia desde la entidad hacia Coonecta. El crédito transfiere los fondos debitados de la cuenta del usuario a la cuenta del beneficiario, siendo la operación final en una transferencia.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "02050000000123",
+                  "CreDtTm": "2025-01-20T00:00:00",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "pacs.009.020.01"
+                  },
+                  "ChnlId": "WEB"
+                },
+                "CdtTrfTxInf": {
+                  "PmtId": {
+                    "EndToEndId": "02050000000123",
+                    "TxId": "9876543210"
+                  },
+                  "IntrBkSttlmAmt": {
+                    "Amt": 22.5,
+                    "Ccy": "USD"
+                  },
+                  "Dbtr": {
+                    "Nm": "RIVADENEIRA BEJARANO KEVIN MAURICIO",
+                    "Id": "1724672728",
+                    "SchmeNm": "CDI"
+                  },
+                  "DbtrAcctId": {
+                    "IBAN": "EC1282055678901234567890"
+                  },
+                  "Cdtr": {
+                    "Nm": "DURAN DE LA ROSA ESTEBAN ANDRES",
+                    "Id": "1720406080",
+                    "SchmeNm": "CDI"
+                  },
+                  "CdtrAcctId": {
+                    "IBAN": "EC1282060000000002222222"
+                  },
+                  "Prtry": {
+                    "CustRef": "Pago mensualidades",
+                    "ChanRef": "TERM001",
+                    "AgtRef": "AGT0002"
+                  },
+                  "SttlmDt": "2025-01-20"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "0205202510210000000059",
+                    "CreDtTm": "2017-12-15T10:35:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "8205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "8206"
+                    },
+                    "Mge": {
+                      "Type": "pacs.002.020.01"
+                    }
+                  },
+                  "TxInfAndSts": {
+                    "OrgnlGrpInf": {
+                      "OrgnlMsgId": "0205202510210000000059",
+                      "OrgnlMsgNmId": "pacs.008.020.01",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00",
+                      "OrgnlEndToEndId": "02050000000123",
+                      "OrgnlTxId": "9876543210"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "000",
+                      "AddtlInf": "Transacción Exitosa"
+                    },
+                    "AuthCode": "265948"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/switchcentral/finan/reverso_credito": {
+      "post": {
+        "tags": [
+          "Financial - Transacciones Financieras (Coonecta hacia Entidad financiera)"
+        ],
+        "description": "El reverso de crédito se genera si la entidad receptora no responde dentro del tiempo establecido (Timeout) o si ocurre algún fallo en el procesamiento del crédito. Este reverso puede generar también un reverso automático del débito correspondiente, usando SAF para esto.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditReverseRequest"
+              },
+              "example": {
+                "GrpHdr": {
+                  "MsgId": "0205202510210000000059",
+                  "CreDtTm": "2025-01-20T10:15:30",
+                  "NbOfTxs": 1,
+                  "SttlmInf": {
+                    "SttlmMtd": "INGA"
+                  },
+                  "InstgAgt": {
+                    "FinInstnId": "0205"
+                  },
+                  "InstdAgt": {
+                    "FinInstnId": "0206"
+                  },
+                  "Mge": {
+                    "Type": "pacs.007.020.01"
+                  },
+                  "ChnlId": "WEB"
+                },
+                "PmtRtr": {
+                  "OrgnlGrpInf": {
+                    "OrgnlMsgId": "02080000000653",
+                    "OrgnlMsgNmId": "pacs.008.020.01",
+                    "OrgnlCreDtTm": "2017-12-15T10:35:00"
+                  },
+                  "PmtId": {
+                    "OrgnlEndToEndId": "02080000000653",
+                    "OrgnlTxId": "65552364125"
+                  },
+                  "IntrBkSttlmAmt": {
+                    "Amt": 22.5,
+                    "Ccy": "USD"
+                  },
+                  "TxSts": "OK",
+                  "Rsn": {
+                    "RsnCd": "000",
+                    "AddtlInf": "REVERSO EXITOSO"
+                  },
+                  "CdtrAcctId": {
+                    "IBAN": "EC1282050000000002222222"
+                  },
+                  "SttlmDt": "2025-10-12"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditReverseResponse"
+                },
+                "example": {
+                  "GrpHdr": {
+                    "MsgId": "02050000000123",
+                    "CreDtTm": "2017-12-15T10:35:00",
+                    "NbOfTxs": 1,
+                    "SttlmInf": {
+                      "SttlmMtd": "INGA"
+                    },
+                    "InstgAgt": {
+                      "FinInstnId": "0205"
+                    },
+                    "InstdAgt": {
+                      "FinInstnId": "0206"
+                    },
+                    "Mge": {
+                      "Type": "pacs.002.022.01"
+                    },
+                    "ChnlId": "APP"
+                  },
+                  "TxInfAndSts": {
+                    "OrgnlGrpInf": {
+                      "OrgnlMsgId": "02050000000123",
+                      "OrgnlMsgNmId": "pacs.007.021..1",
+                      "OrgnlCreDtTm": "2017-12-15T10:35:00",
+                      "OrgnlEndToEndId": "02050000000123",
+                      "OrgnlTxId": "9876543210"
+                    },
+                    "TxSts": "OK",
+                    "Rsn": {
+                      "RsnCd": "000",
+                      "AddtlInf": "Transacción Exitosa"
+                    },
+                    "AcctSvcrRef": "086523"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DisaffiliationRequest": {
+        "type": "object",
+        "description": "Solicitud de desafiliación de un usuario.",
+        "properties": {
+          "grpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "blkUser": {
+            "$ref": "#/components/schemas/BlkUser"
+          }
+        },
+        "required": [
+          "grpHdr",
+          "blkUser"
+        ],
+        "additionalProperties": false
+      },
+      "BlkUser": {
+        "type": "object",
+        "description": "Información del usuario a desafiliar.",
+        "properties": {
+          "acct": {
+            "type": "object",
+            "properties": {
+              "acctId": {
+                "type": "string",
+                "maxLength": 24,
+                "description": "Llave única del usuario",
+                "example": "22244651321681300"
+              }
+            },
+            "required": [
+              "acctId"
+            ],
+            "additionalProperties": false
+          },
+          "ctrlInf": {
+            "type": "object",
+            "properties": {
+              "actnTp": {
+                "type": "string",
+                "maxLength": 4,
+                "description": "Operación sobre la cuenta",
+                "example": "DESAFILIACIÓN - BLOQUEO - DESBLOQUEO"
+              }
+            },
+            "required": [
+              "actnTp"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "acct",
+          "ctrlInf"
+        ],
+        "additionalProperties": false
+      },
+      "DisaffiliationResponse": {
+        "type": "object",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "AcctEnroll": {
+            "type": "object",
+            "properties": {
+              "OrgnGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en GrpHdr/MsgId.",
+                    "example": "8205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original GrpHdr/Mge/Type.",
+                    "example": "acmt.998.311.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado GrpHdr/CreDtTm.",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR).",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus.",
+                    "example": "0000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos.",
+                    "example": "TRANSACCIÓN EXITOSA"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha contable de la transacción, switch central (Coonecta).",
+                "example": "2025-01-10"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "AcctEnroll"
+        ]
+      },
+      "AffiliationResponse": {
+        "type": "object",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "AcctEnroll": {
+            "type": "object",
+            "required": [
+              "OrgnlGrpInf",
+              "TxSts",
+              "Rsn",
+              "Acct",
+              "Othr",
+              "SttlmDt"
+            ],
+            "properties": {
+              "AcctEnroll\\OrgnlGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "8205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "acmt.998.211.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "maxLength": 19,
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "required": [
+                  "RsnCd"
+                ],
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "####"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Afiliación exitosa"
+                  }
+                }
+              },
+              "Acct": {
+                "type": "object",
+                "required": [
+                  "IBAN"
+                ],
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del usuario",
+                    "example": "EC1282055678901234567890"
+                  }
+                }
+              },
+              "Othr": {
+                "type": "object",
+                "required": [
+                  "Cred"
+                ],
+                "properties": {
+                  "Cred": {
+                    "type": "array",
+                    "description": "Se devuelve el QR calculado",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "string",
+                          "maxLength": 8,
+                          "description": "Identificador de credencial",
+                          "example": "CQR"
+                        },
+                        "Value": {
+                          "type": "string",
+                          "maxLength": 70,
+                          "description": "Valor de la credencial",
+                          "example": "ASDDS6354831SAD5315SAD435AS4DAS356D354897"
+                        }
+                      },
+                      "required": [
+                        "Id",
+                        "Value"
+                      ]
+                    }
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10,
+                "description": "Fecha contable de la transacción, switch central (Coonecta)",
+                "example": "20225-01-10"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "AcctEnroll"
+        ]
+      },
+      "AccountConsultationRequest": {
+        "type": "object",
+        "description": "Solicitud de consulta de cuenta.",
+        "properties": {
+          "grpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "qryUsrByAcc": {
+            "$ref": "#/components/schemas/QryUsrByAcc"
+          }
+        },
+        "required": [
+          "grpHdr",
+          "qryUsrByAcc"
+        ],
+        "additionalProperties": false
+      },
+      "QryUsrByAcc": {
+        "type": "object",
+        "description": "Consulta de usuario por cuenta.",
+        "properties": {
+          "acct": {
+            "$ref": "#/components/schemas/Entities.Administration.Request.AccountConsultation.Acct"
+          }
+        },
+        "required": [
+          "acct"
+        ],
+        "additionalProperties": false
+      },
+      "Entities.Administration.Request.AccountConsultation.Acct": {
+        "type": "object",
+        "description": "Información básica de la cuenta.",
+        "properties": {
+          "acctId": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "Número de cuenta bancaria.",
+            "example": "00051654132598"
+          },
+          "acctTp": {
+            "type": "string",
+            "maxLength": 2,
+            "description": "Tipo de cuenta bancaria.",
+            "example": 10
+          }
+        },
+        "required": [
+          "acctId",
+          "acctTp"
+        ],
+        "additionalProperties": false
+      },
+      "AccountConsultationResponse": {
+        "type": "object",
+        "description": "Respuesta de consulta de cuenta.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "QryUsrByAcc": {
+            "type": "object",
+            "properties": {
+              "OrgnGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId).",
+                    "example": "8205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type).",
+                    "example": "acmt.998.421.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm).",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR).",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus.",
+                    "example": "####"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos.",
+                    "example": "Transacción Exitosa"
+                  }
+                }
+              },
+              "Acct": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del titular.",
+                    "example": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                  },
+                  "DocTp": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Tipo de documento.",
+                    "example": "CDI"
+                  },
+                  "DocId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Número de documento.",
+                    "example": "1724672728"
+                  },
+                  "AcctTp": {
+                    "type": "string",
+                    "maxLength": 2,
+                    "description": "Tipo de cuenta.",
+                    "example": "10"
+                  },
+                  "AcctId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Número de cuenta.",
+                    "example": "2654132598"
+                  }
+                }
+              },
+              "Othr": {
+                "type": "object",
+                "properties": {
+                  "Cred": {
+                    "type": "array",
+                    "description": "Se puede enviar todas las credenciales que requieran, con su identificación y valor respectivo.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "Id": {
+                          "type": "string",
+                          "maxLength": 8,
+                          "description": "Identificador de credencial.",
+                          "example": "CEL"
+                        },
+                        "Value": {
+                          "type": "string",
+                          "maxLength": 70,
+                          "description": "Valor de la credencial.",
+                          "example": "09#######"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha de la transacción.",
+                "example": "2017-12-20"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "QryUsrByAcc"
+        ],
+        "additionalProperties": false
+      },
+      "CredentialConsultationRequest": {
+        "type": "object",
+        "description": "Solicitud de consulta de cuenta por credencial.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "QryAccByCred": {
+            "$ref": "#/components/schemas/QryAccByCred"
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "QryAccByCred"
+        ],
+        "additionalProperties": false
+      },
+      "QryAccByCred": {
+        "type": "object",
+        "description": "Consulta de cuenta por credencial.",
+        "properties": {
+          "Cred": {
+            "$ref": "#/components/schemas/Cred"
+          }
+        },
+        "required": [
+          "Cred"
+        ],
+        "additionalProperties": false
+      },
+      "CredentialConsultationResponse": {
+        "type": "object",
+        "description": "Respuesta de consulta de credenciales del usuario.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "QryAccByCred": {
+            "type": "object",
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "8205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "acmt.998.441.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "maxLength": 19,
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "####"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Consulta exitosa"
+                  }
+                }
+              },
+              "Acct": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del titular",
+                    "example": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                  }
+                }
+              },
+              "Cred": {
+                "type": "object",
+                "properties": {
+                  "Value": {
+                    "type": "string",
+                    "maxLength": 30,
+                    "description": "Valor de la credencial del usuario",
+                    "example": "0984846831"
+                  }
+                }
+              },
+              "InstAgt": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "FinInstnId": {
+                      "type": "string",
+                      "maxLength": 4,
+                      "description": "Código de la entidad financiera",
+                      "example": "8266"
+                    },
+                    "FinInstnNm": {
+                      "type": "string",
+                      "maxLength": 40,
+                      "description": "Nombre de la entidad financiera",
+                      "example": "CACPECO"
+                    },
+                    "IBAN": {
+                      "type": "string",
+                      "maxLength": 24,
+                      "description": "Llave única del usuario",
+                      "example": "EC1282055678901234567890"
+                    }
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10,
+                "description": "Fecha contable de la transacción, switch central (Coonecta)",
+                "example": "2025-01-10"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "QryAccByCred"
+        ],
+        "additionalProperties": false
+      },
+      "ConsultationStatusTransactionRequest": {
+        "type": "object",
+        "description": "Consulta del estado de una transacción basada en EndToEndId.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "CdtTrfTxInf": {
+            "type": "object",
+            "properties": {
+              "PmtId": {
+                "type": "object",
+                "properties": {
+                  "EndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "82050000000123"
+                  },
+                  "CreDtTm": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "format": "date",
+                    "description": "Fecha de creación de la transacción.",
+                    "example": "2025-01-02"
+                  }
+                },
+                "required": [
+                  "EndToEndId",
+                  "CreDtTm"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "PmtId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "CdtTrfTxInf"
+        ],
+        "additionalProperties": false
+      },
+      "ConsultationStatusTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "GrpHdr": {
+            "type": "object"
+          },
+          "CdtTrfTxInf": {
+            "type": "object",
+            "properties": {
+              "PmtId": {
+                "type": "object",
+                "properties": {
+                  "EndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "82050000000123"
+                  },
+                  "TxId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de la transacción original",
+                    "example": "9876543210"
+                  }
+                }
+              },
+              "IntrBkSttlmAmt": {
+                "type": "object",
+                "properties": {
+                  "Amt": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Monto de la transacción con separador de decimales con punto",
+                    "example": 22.5
+                  },
+                  "Ccy": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Indicador de moneda",
+                    "example": "USD"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus de la transacción financiera",
+                    "example": "####"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Consulta exitosa"
+                  }
+                }
+              },
+              "Dbtr": {
+                "type": "object",
+                "properties": {
+                  "AuthCode": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Código de autorización de la entidad ordenante",
+                    "example": "968574"
+                  }
+                }
+              },
+              "Cdtr": {
+                "type": "object",
+                "properties": {
+                  "AuthCode": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Código de autorización de la entidad receptora",
+                    "example": "227789"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha contable de la transacción, Switch central (Coonecta)",
+                "example": "2025-01-20"
+              }
+            }
+          }
+        }
+      },
+      "TransferRequest": {
+        "type": "object",
+        "description": "Solicitud de transferencia financiera entre dos entidades.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "CdtTrfTxInf": {
+            "$ref": "#/components/schemas/CdtTrfTxInf"
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "CdtTrfTxInf"
+        ],
+        "additionalProperties": false
+      },
+      "CdtTrfTxInf": {
+        "type": "object",
+        "description": "Información de la transacción de transferencia de crédito.",
+        "properties": {
+          "PmtId": {
+            "type": "object",
+            "properties": {
+              "EndToEndId": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Id de Referencia del sistema que inicia la operación",
+                "example": "820500000000123"
+              }
+            },
+            "required": [
+              "EndToEndId"
+            ]
+          },
+          "IntrBkSttlmAmt": {
+            "type": "object",
+            "properties": {
+              "Amt": {
+                "type": "number",
+                "maxLength": 11,
+                "format": "double",
+                "description": "Monto de la transacción con separador de decimales con punto",
+                "example": 22.5
+              },
+              "Ccy": {
+                "type": "string",
+                "maxLength": 3,
+                "description": "Código de la moneda utilizada en la transacción.",
+                "example": "USD"
+              }
+            },
+            "required": [
+              "Amt",
+              "Ccy"
+            ]
+          },
+          "DbtrAcctId": {
+            "type": "object",
+            "properties": {
+              "IBAN": {
+                "type": "string",
+                "maxLength": 24,
+                "description": "Llave única del debitado",
+                "example": "EC1282055678901234567890"
+              }
+            },
+            "required": [
+              "IBAN"
+            ]
+          },
+          "CdtrAcctId": {
+            "type": "object",
+            "properties": {
+              "IBAN": {
+                "type": "string",
+                "maxLength": 24,
+                "description": "Llave única del acreditado",
+                "example": "EC1282060000000000222222"
+              }
+            },
+            "required": [
+              "IBAN"
+            ]
+          },
+          "Prtry": {
+            "type": "object",
+            "properties": {
+              "CustRef": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Información adicional introducida por el cliente",
+                "example": "Pago menestras"
+              },
+              "ChanRef": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Código del canal",
+                "example": "TERM001"
+              },
+              "AgtRef": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Código de la agencia",
+                "example": "AGT0002"
+              }
+            },
+            "required": [
+              "CustRef",
+              "ChanRef",
+              "AgtRef"
+            ]
+          }
+        },
+        "required": [
+          "PmtId",
+          "IntrBkSttlmAmt",
+          "DbtrAcctId",
+          "CdtrAcctId",
+          "Prtry"
+        ],
+        "additionalProperties": false
+      },
+      "TransferResponse": {
+        "type": "object",
+        "required": [
+          "CdtTrfTxInf"
+        ],
+        "properties": {
+          "GrpHdr": {
+            "type": "object",
+            "description": "Encabezado del mensaje"
+          },
+          "CdtTrfTxInf": {
+            "type": "object",
+            "required": [
+              "OrgnGrpInf",
+              "PmtId",
+              "TxSts",
+              "Rsn",
+              "Dbtr",
+              "Cdtr",
+              "SttlmDt"
+            ],
+            "properties": {
+              "OrgnGrpInf": {
+                "type": "object",
+                "required": [
+                  "OrgnlMsgId",
+                  "OrgnlMgeType",
+                  "OrgnlCreDtTm"
+                ],
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "8205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "acmt.998.321.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "PmtId": {
+                "type": "object",
+                "required": [
+                  "EndToEndId",
+                  "TxId"
+                ],
+                "properties": {
+                  "EndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "02050000000123"
+                  },
+                  "TxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Id de Referencia del sistema central (Coonecta)",
+                    "example": "9876543210"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "required": [
+                  "RsnCd"
+                ],
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "0000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Transaccion Exitosa"
+                  }
+                }
+              },
+              "Dbtr": {
+                "type": "object",
+                "required": [
+                  "AuthCode"
+                ],
+                "properties": {
+                  "AuthCode": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Código de autorización de la entidad ordenante",
+                    "example": "968574"
+                  }
+                }
+              },
+              "Cdtr": {
+                "type": "object",
+                "required": [
+                  "AuthCode"
+                ],
+                "properties": {
+                  "AuthCode": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Código de autorización de la entidad receptora",
+                    "example": "227789"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha contable de la transacción, switch central (Coonecta)",
+                "example": "2025-01-20"
+              }
+            }
+          }
+        }
+      },
+      "DebitRequest": {
+        "type": "object",
+        "description": "Solicitud de débito de un usuario.",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "CdtTrfTxInf": {
+            "type": "object",
+            "properties": {
+              "PmtId": {
+                "type": "object",
+                "properties": {
+                  "EndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de referencia del sistema que inicia la operación.",
+                    "example": "02050000000123"
+                  },
+                  "TxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Secuencia generada por el switch central (Coonecta).",
+                    "example": "9876543210"
+                  }
+                },
+                "required": [
+                  "EndToEndId",
+                  "TxId"
+                ],
+                "additionalProperties": false
+              },
+              "IntrBkSttlmAmt": {
+                "type": "object",
+                "properties": {
+                  "Amt": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "Monto de la transacción con separador de decimales con punto.",
+                    "example": 22.5
+                  },
+                  "Ccy": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Indicador de moneda.",
+                    "example": "USD"
+                  }
+                },
+                "required": [
+                  "Amt",
+                  "Ccy"
+                ],
+                "additionalProperties": false
+              },
+              "Dbtr": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del usuario debitado.",
+                    "example": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                  },
+                  "Id": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Número de documento del usuario debitado.",
+                    "example": "1724672728"
+                  },
+                  "SchmeNm": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Tipo de documento del usuario debitado.",
+                    "example": "CDI"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "DbtrAcctId": {
+                "type": "object",
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del debitado.",
+                    "example": "EC1282055678901234567890"
+                  }
+                },
+                "required": [
+                  "IBAN"
+                ],
+                "additionalProperties": false
+              },
+              "Cdtr": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del usuario acreditado.",
+                    "example": "DURAN DE LA ROSA ESTEBAN ANDRES"
+                  },
+                  "Id": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Número de documento del usuario acreditado.",
+                    "example": "1720406080"
+                  },
+                  "SchmeNm": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Tipo de documento del usuario acreditado.",
+                    "example": "CDI"
+                  }
+                },
+                "required": [
+                  "SchmeNm"
+                ],
+                "additionalProperties": false
+              },
+              "CdtrAcctId": {
+                "type": "object",
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del acreditado.",
+                    "example": "EC1282060000000000222222"
+                  }
+                },
+                "required": [
+                  "IBAN"
+                ],
+                "additionalProperties": false
+              },
+              "Prtry": {
+                "type": "object",
+                "properties": {
+                  "CustRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Información adicional introducida por el cliente.",
+                    "example": "Pago mensualidades"
+                  },
+                  "ChanRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Referencia introducida por el canal.",
+                    "example": "TERM001"
+                  },
+                  "AgtRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Referencia introducida por la agencia.",
+                    "example": "AGT0002"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha contable de la transacción, switch central (Coonecta).",
+                "example": "2025-01-20"
+              }
+            },
+            "required": [
+              "PmtId",
+              "IntrBkSttlmAmt",
+              "DbtrAcctId",
+              "CdtrAcctId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "CdtTrfTxInf"
+        ],
+        "additionalProperties": false
+      },
+      "DebitResponse": {
+        "type": "object",
+        "description": "Respuesta de la solicitud de débito.",
+        "properties": {
+          "GrpHdr": {
+            "type": "object",
+            "description": "Encabezado del mensaje de respuesta."
+          },
+          "TxInfAndSts": {
+            "type": "object",
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId).",
+                    "example": "0205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type).",
+                    "example": "pacs.008.040.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm).",
+                    "example": "2017-12-15T10:35:00"
+                  },
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id incluido en mensaje original que puede repetirse en varios mensajes pertenecientes a la misma transacción (CdtTrfTxInf\\PmtId\\EndToEndId).",
+                    "example": "02050000000123"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Referencia a la transacción Id Original (CdtTrfTxInf\\PmtId\\TxId).",
+                    "example": "635241789632"
+                  }
+                },
+                "required": [
+                  "OrgnlMsgId",
+                  "OrgnlMgeType",
+                  "OrgnlCreDtTm",
+                  "OrgnlEndToEndId",
+                  "OrgnlTxId"
+                ],
+                "additionalProperties": false
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR).",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus.",
+                    "example": "000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos.",
+                    "example": "Transacción Exitosa"
+                  }
+                },
+                "required": [
+                  "RsnCd"
+                ],
+                "additionalProperties": false
+              },
+              "AuthCode": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Código de autorización de la entidad.",
+                "example": "968574"
+              }
+            },
+            "required": [
+              "OrgnlGrpInf",
+              "TxSts",
+              "Rsn",
+              "AuthCode"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "TxInfAndSts"
+        ],
+        "additionalProperties": false
+      },
+      "ReverseDebitRequest": {
+        "type": "object",
+        "required": [
+          "GrpHdr",
+          "PmtRtr"
+        ],
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "PmtRtr": {
+            "type": "object",
+            "required": [
+              "OrgnlGrpInf",
+              "PmtId",
+              "IntrBkSttlmAmt",
+              "RtrRsnInf",
+              "CdtrAcctId",
+              "SttlmDt"
+            ],
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "required": [
+                  "OrgnlMsgId",
+                  "OrgnlMsgNmId",
+                  "OrgnlCreDtTm"
+                ],
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original (GrpHdr\\MsgId)"
+                  },
+                  "OrgnlMsgNmId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Identificador del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "pacs.008.040.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "PmtId": {
+                "type": "object",
+                "required": [
+                  "OrgnlEndToEndId",
+                  "OrgnlTxId"
+                ],
+                "properties": {
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "02080000000653"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Secuencia generada por el switch central",
+                    "example": "6552364125"
+                  }
+                }
+              },
+              "IntrBkSttlmAmt": {
+                "type": "object",
+                "required": [
+                  "Amt",
+                  "Ccy"
+                ],
+                "properties": {
+                  "Amt": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "Monto de la transacción con separador de decimales con punto.",
+                    "example": 22.5
+                  },
+                  "Ccy": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Moneda y Monto a reversar",
+                    "example": "USD"
+                  }
+                }
+              },
+              "RtrRsnInf": {
+                "type": "object",
+                "required": [
+                  "ReversalRsn"
+                ],
+                "properties": {
+                  "ReversalRsn": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reverso",
+                    "example": "###"
+                  }
+                }
+              },
+              "CdtrAcctId": {
+                "type": "object",
+                "required": [
+                  "IBAN"
+                ],
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del usuario del débito",
+                    "example": "EC128205000000000022222"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10,
+                "description": "Fecha contable de la transacción del switch central (Coonecta)",
+                "example": "12/10/2025"
+              }
+            }
+          }
+        }
+      },
+      "ReverseDebitResponse": {
+        "type": "object",
+        "required": [
+          "GrpHdr",
+          "TxInfAndSts"
+        ],
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "TxInfAndSts": {
+            "type": "object",
+            "required": [
+              "OrgnlGrpInf",
+              "TxSts",
+              "Rsn",
+              "AuthCode"
+            ],
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "required": [
+                  "OrgnlMsgId",
+                  "OrgnlMgeType",
+                  "OrgnlCreDtTm",
+                  "OrgnlEndToEndId",
+                  "OrgnlTxId"
+                ],
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "0205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "pacs.008.040.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  },
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id incluido en mensaje original que puede repetirse en varios mensajes pertenecientes a la misma transacción (CdtTrfTxInf\\PmtId\\EndToEndId)",
+                    "example": "02050000000123"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Referencia a la transacción Id Original (CdtTrfTxInf\\PmtId\\TxId)",
+                    "example": "635241789632"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "required": [
+                  "RsnCd"
+                ],
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Transacción Exitosa"
+                  }
+                }
+              },
+              "AuthCode": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Código de autorización de la entidad",
+                "example": "968574"
+              }
+            }
+          }
+        }
+      },
+      "CreditRequest": {
+        "type": "object",
+        "required": [
+          "GrpHdr",
+          "CdtTrfTxInf"
+        ],
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "CdtTrfTxInf": {
+            "type": "object",
+            "required": [
+              "PmtId",
+              "IntrBkSttlmAmt",
+              "DbtrAcctId",
+              "CdtrAcctId"
+            ],
+            "properties": {
+              "PmtId": {
+                "type": "object",
+                "required": [
+                  "EndToEndId",
+                  "TxId"
+                ],
+                "properties": {
+                  "EndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "82080000000653"
+                  },
+                  "TxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Secuencia generada por el switch central (Coonecta)",
+                    "example": "6552364125"
+                  }
+                }
+              },
+              "IntrBkSttlmAmt": {
+                "type": "object",
+                "required": [
+                  "Amt",
+                  "Ccy"
+                ],
+                "properties": {
+                  "Amt": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "Monto de la transacción con separador de decimales con punto",
+                    "example": 22.5
+                  },
+                  "Ccy": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Indicador de moneda",
+                    "example": "USD"
+                  }
+                }
+              },
+              "Dbtr": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del usuario debitado",
+                    "example": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+                  },
+                  "Id": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Número de documento del usuario debitado",
+                    "example": "1724672728"
+                  },
+                  "SchmeNm": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Tipo de documento del usuario debitado",
+                    "example": "RUC"
+                  }
+                }
+              },
+              "DbtrAcctId": {
+                "type": "object",
+                "required": [
+                  "IBAN"
+                ],
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del usuario debitado",
+                    "example": "EC1282055678901234567890"
+                  }
+                }
+              },
+              "Cdtr": {
+                "type": "object",
+                "properties": {
+                  "Nm": {
+                    "type": "string",
+                    "maxLength": 140,
+                    "description": "Nombre del usuario acreditado",
+                    "example": "DURÁN DE LA ROSA ESTEBAN"
+                  },
+                  "Id": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Número de documento del usuario acreditado",
+                    "example": "1726589656"
+                  },
+                  "SchmeNm": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Tipo de documento del usuario acreditado",
+                    "example": "CDI"
+                  }
+                }
+              },
+              "CdtrAcctId": {
+                "type": "object",
+                "required": [
+                  "IBAN"
+                ],
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del usuario acreditado",
+                    "example": "EC128205000000000022222"
+                  }
+                }
+              },
+              "Prtry": {
+                "type": "object",
+                "properties": {
+                  "CustRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Información adicional introducida por el cliente",
+                    "example": "Pago menestras"
+                  },
+                  "ChanRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Referencia introducida por el canal",
+                    "example": "TERM001"
+                  },
+                  "AgtRef": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Referencia introducida por la agencia",
+                    "example": "AGT0002"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "format": "date",
+                "description": "Fecha contable del switch central (Coonecta)",
+                "example": "2025-01-20"
+              }
+            }
+          }
+        }
+      },
+      "CreditResponse": {
+        "type": "object",
+        "required": [
+          "GrpHdr",
+          "TxInfAndSts"
+        ],
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "TxInfAndSts": {
+            "type": "object",
+            "required": [
+              "OrgnlGrpInf",
+              "TxSts",
+              "Rsn",
+              "AuthCode"
+            ],
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "required": [
+                  "OrgnlMsgId",
+                  "OrgnlMgeType",
+                  "OrgnlCreDtTm",
+                  "OrgnlEndToEndId",
+                  "OrgnlTxId"
+                ],
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "0205202510210000000059"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "pacs.008.020.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  },
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "02050000000123"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Id de Referencia del sistema central",
+                    "example": "9876543210"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "required": [
+                  "RsnCd"
+                ],
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Transacción Exitosa"
+                  }
+                }
+              },
+              "AuthCode": {
+                "type": "string",
+                "maxLength": 35,
+                "description": "Código de autorización de la entidad",
+                "example": "265948"
+              }
+            }
+          }
+        }
+      },
+      "CreditReverseRequest": {
+        "type": "object",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "PmtRtr": {
+            "type": "object",
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original (GrpHdr\\MsgId)",
+                    "example": "0205202510210000000059"
+                  },
+                  "OrgnlMsgNmId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Identificador del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "pacs.008.020.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  }
+                }
+              },
+              "PmtId": {
+                "type": "object",
+                "properties": {
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "02080000000653"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Secuencia generada por el switch central",
+                    "example": "6552364125"
+                  }
+                }
+              },
+              "IntrBkSttlmAmt": {
+                "type": "object",
+                "properties": {
+                  "Amt": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "description": "Monto de la transacción con separador de decimales con punto",
+                    "example": "22.5"
+                  },
+                  "Ccy": {
+                    "type": "string",
+                    "maxLength": 3,
+                    "description": "Moneda y Monto a reversar",
+                    "example": "USD"
+                  }
+                }
+              },
+              "RtrRsnInf": {
+                "type": "object",
+                "properties": {
+                  "ReversalRsn": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reverso",
+                    "example": "###"
+                  }
+                }
+              },
+              "CdtrAcctId": {
+                "type": "object",
+                "properties": {
+                  "IBAN": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "description": "Llave única del usuario del crédito",
+                    "example": "EC128205000000000022222"
+                  }
+                }
+              },
+              "SttlmDt": {
+                "type": "string",
+                "pattern": "^\\d{2}/\\d{2}/\\d{4}$",
+                "description": "Fecha contable de la transacción",
+                "example": "12/10/2025"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "PmtRtr"
+        ]
+      },
+      "CreditReverseResponse": {
+        "type": "object",
+        "properties": {
+          "GrpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "TxInfAndSts": {
+            "type": "object",
+            "properties": {
+              "OrgnlGrpInf": {
+                "type": "object",
+                "properties": {
+                  "OrgnlMsgId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Punto de referencia con el mensaje original incluido en (GrpHdr\\MsgId)",
+                    "example": "PmtRtr/OrgnlGrpInf/OrgnlMsgId"
+                  },
+                  "OrgnlMgeType": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "description": "Contenido del campo Header del mensaje original (GrpHdr\\Mge\\Type)",
+                    "example": "pacs.002.022.01"
+                  },
+                  "OrgnlCreDtTm": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora en la que el mensaje de request fue creado (GrpHdr\\CreDtTm)",
+                    "example": "2017-12-15T10:35:00"
+                  },
+                  "OrgnlEndToEndId": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "description": "Id de Referencia del sistema que inicia la operación",
+                    "example": "02050000000123"
+                  },
+                  "OrgnlTxId": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "description": "Id de Referencia del sistema central",
+                    "example": "9876543210"
+                  }
+                }
+              },
+              "TxSts": {
+                "type": "string",
+                "maxLength": 12,
+                "description": "Estatus de la transacción (OK - ERR)",
+                "example": "OK"
+              },
+              "Rsn": {
+                "type": "object",
+                "properties": {
+                  "RsnCd": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "description": "Razón del reporte de estatus",
+                    "example": "000"
+                  },
+                  "AddtlInf": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Detalle del estado de razón, puede ser usado para múltiples propósitos",
+                    "example": "Transacción Exitosa"
+                  }
+                }
+              },
+              "AcctSvcrRef": {
+                "type": "string",
+                "maxLength": 6,
+                "description": "Referencia de la institución que procesa la transacción",
+                "example": "086523"
+              }
+            }
+          }
+        },
+        "required": [
+          "GrpHdr",
+          "TxInfAndSts"
+        ]
+      },
+      "Acct": {
+        "type": "object",
+        "description": "Información de la cuenta del usuario.",
+        "properties": {
+          "nm": {
+            "type": "string",
+            "maxLength": 70,
+            "description": "Nombre completo del titular de la cuenta.",
+            "example": "RIVADENEIRA BEJARANO KEVIN MAURICIO"
+          },
+          "docTp": {
+            "type": "string",
+            "maxLength": 3,
+            "description": "Tipo de documento de identificación.",
+            "example": "CDI"
+          },
+          "docId": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "Número de documento de identificación.",
+            "example": "1752635263"
+          },
+          "acctTp": {
+            "type": "string",
+            "maxLength": 2,
+            "description": "Tipo de cuenta bancaria.",
+            "example": "10"
+          },
+          "acctId": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "Número de cuenta bancaria.",
+            "example": "22244651321681300"
+          }
+        },
+        "required": [
+          "nm",
+          "docTp",
+          "docId",
+          "acctTp",
+          "acctId"
+        ],
+        "additionalProperties": false
+      },
+      "AcctEnroll": {
+        "type": "object",
+        "description": "Datos de la afiliación de la cuenta.",
+        "properties": {
+          "acct": {
+            "$ref": "#/components/schemas/Acct"
+          },
+          "othr": {
+            "$ref": "#/components/schemas/Othr"
+          },
+          "operationType": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "Indica si es una afiliación(Create) o una actualización(Update)",
+            "example": "AFIL"
+          }
+        },
+        "required": [
+          "acct",
+          "othr",
+          "operationType"
+        ],
+        "additionalProperties": false
+      },
+      "AffiliationRequest": {
+        "type": "object",
+        "description": "Solicitud de afiliación/desafiliación.",
+        "properties": {
+          "grpHdr": {
+            "$ref": "#/components/schemas/GrpHdr"
+          },
+          "acctEnroll": {
+            "$ref": "#/components/schemas/AcctEnroll"
+          }
+        },
+        "required": [
+          "grpHdr",
+          "acctEnroll"
+        ],
+        "additionalProperties": false
+      },
+      "Cred": {
+        "type": "object",
+        "description": "Credenciales alternativas de autenticación.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "Identificador de la credencial",
+            "example": "CELULAR / QR / MAIL"
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 70,
+            "description": "Credencial del usuario",
+            "example": "09######"
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "GrpHdr": {
+        "type": "object",
+        "description": "Encabezado del mensaje.",
+        "properties": {
+          "msgId": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "Identificador único del mensaje.",
+            "example": "8205202510210000000059"
+          },
+          "creDtTm": {
+            "type": "string",
+            "format": "date-time",
+            "maxLength": 19,
+            "description": "Fecha y hora de creación del mensaje.",
+            "example": "2025-01-20T10:15:30"
+          },
+          "nbOfTxs": {
+            "type": "integer",
+            "format": "int32",
+            "maxLength": 1,
+            "description": "Número de transacciones incluidas.",
+            "example": 1
+          },
+          "sttlmInf": {
+            "$ref": "#/components/schemas/SttlmInf"
+          },
+          "instgAgt": {
+            "$ref": "#/components/schemas/InstgAgt"
+          },
+          "instdAgt": {
+            "$ref": "#/components/schemas/InstdAgt"
+          },
+          "mge": {
+            "$ref": "#/components/schemas/Mge"
+          },
+          "chnlId": {
+            "type": "string",
+            "maxLength": 3,
+            "description": "Canal de comunicación del mensaje.",
+            "example": "APP"
+          }
+        },
+        "required": [
+          "msgId",
+          "creDtTm",
+          "nbOfTxs",
+          "sttlmInf",
+          "instgAgt",
+          "instdAgt",
+          "mge",
+          "chnlId"
+        ],
+        "additionalProperties": false
+      },
+      "InstdAgt": {
+        "type": "object",
+        "description": "Entidad instruida en el mensaje.",
+        "properties": {
+          "finInstnId": {
+            "type": "string",
+            "maxLength": 4,
+            "description": "Código de la entidad instruida.",
+            "example": "0000"
+          }
+        },
+        "required": [
+          "finInstnId"
+        ],
+        "additionalProperties": false
+      },
+      "InstgAgt": {
+        "type": "object",
+        "description": "Entidad instructora del mensaje.",
+        "properties": {
+          "finInstnId": {
+            "type": "string",
+            "maxLength": 4,
+            "description": "Código de la entidad instructora.",
+            "example": "0205"
+          }
+        },
+        "required": [
+          "finInstnId"
+        ],
+        "additionalProperties": false
+      },
+      "Mge": {
+        "type": "object",
+        "description": "Información del tipo de mensaje.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "maxLength": 15,
+            "description": "Tipo de mensaje.",
+            "example": "acmt.998.211.01"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "Othr": {
+        "type": "object",
+        "description": "Información de credenciales adicionales.",
+        "properties": {
+          "cred": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cred"
+            }
+          }
+        },
+        "required": [
+          "cred"
+        ],
+        "additionalProperties": false
+      },
+      "SttlmInf": {
+        "type": "object",
+        "description": "Información sobre el método de liquidación.",
+        "properties": {
+          "sttlmMtd": {
+            "type": "string",
+            "maxLength": 4,
+            "description": "Método de liquidación.",
+            "example": "INGA"
+          }
+        },
+        "required": [
+          "sttlmMtd"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

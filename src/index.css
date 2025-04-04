@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+  --tertiary: #5c659a;
+  --light-gray: #d2d4e0;
+  --medium-gray: #74748a;
+  --light-blue: #949cbc;
+  --medium-blue: #8c94b4;
+  --primary-bg-color: #263C92;
+  --secondary-bg-color: #28367B;
+  --highlight-color: #ecb938;
+  --text-color: white;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Pages Width View */
+.full-width-padding {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* SideBar */
+.sidebar-scroll {
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.sidebar-fixed {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+/* Imagen - Menus */
+.img-centered {
+  width: 60%;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+/* Images Containers */
+.container-centered {
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.centered-image-container {
+  /* width: 60%; */
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+.centered-image-container img {
+  height: auto;
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+  .centered-image-container {
+    width: 100%;
+    height: auto;
+  }
+}
+/* Tabla Excels */
+.table-container {
+  overflow-x: auto;
+  /* Mantener el scroll horizontal */
+  margin-top: 1.5rem;
+  width: 100%;
+  /* Cambiar de 30% a 100% para ocupar todo el espacio disponible */
+  max-width: 100%;
+}
+
+.table-wrapper {
+  min-width: 100%;
+  /* Asegura que ocupe al menos el 100% del contenedor */
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: fixed;
+  background-color: white;
+  border: 1px solid rgb(16, 17, 17);
+  font-size: 0.7rem;
+}
+
+
+.table th,
+.table td {
+  padding: 0.3rem;
+  border-bottom: 1px solid rgb(16, 17, 17);
+  border-left: 1px solid rgb(16, 17, 17);
+  border-right: 1px solid rgb(16, 17, 17);
+  overflow: hidden;
+  white-space: normal;
+  /* Cambiar de nowrap a normal para permitir múltiples líneas */
+  word-wrap: break-word;
+  /* Añadir para romper palabras largas */
+  vertical-align: top;
+  /* Alinear el texto en la parte superior de la celda */
+  height: auto;
+  /* Permitir que la altura se ajuste al contenido */
+}
+
+.table th {
+  text-align: center;
+  background-color: var(--primary-bg-color);
+  color: white;
+  white-space: nowrap;
+  /* Mantener los encabezados en una sola línea */
+}
+
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.1rem;
+  }
+
+  .table-container {
+    max-width: 600px;
+  }
+
+  .table-wrapper {
+    width: 100%;
+  }
+}
+
+/* colors */
+
+.bg-primary {
+  background-color: var(--primary-bg-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-bg-color);
+}
+
+.text-highlight {
+  color: var(--highlight-color);
+}
+
+.text-white {
+  color: var(--text-color);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+
+.btn-primary {
+  @apply bg-[#ecb938] text-[#2c347c] font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-all;
+}
+
+.btn-secondary {
+  @apply bg-[#5c659a] text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-all;
+}
+
+.menu-item {
+  @apply w-full py-3 px-4 text-center border border-[#2c347c] rounded-md mb-2 hover:bg-[#2c347c] hover:text-white transition-all cursor-pointer;
+}
+
+.menu-item.active {
+  @apply bg-[#2c347c] text-white;
+}
+
+.input-field {
+  @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5c659a];
+}
+
+/* SwaggerUI custom styles */
+.swagger-container {
+  padding: 1rem;
+}
+
+.swagger-ui .info .title {
+  color: #2c347c !important;
+}
+
+.swagger-ui .opblock.opblock-get {
+  border-color: #2c347c;
+  background: rgba(44, 52, 124, 0.1);
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary {
+  border-color: #2c347c;
+}
+
+.swagger-ui .btn.execute {
+  background-color: #2c347c;
+  border-color: #2c347c;
+}
+
+.swagger-ui .btn.execute:hover {
+  background-color: #5c659a;
+  border-color: #5c659a;
+}
