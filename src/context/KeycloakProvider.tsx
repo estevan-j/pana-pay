@@ -1,33 +1,40 @@
+
 import React from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import keycloak from '../config/KeycloakConfig';
+import Keycloak from 'keycloak-js';
+
+// Create a single Keycloak instance outside of the component
+// This ensures it's only created once regardless of component re-renders
+const keycloakInstance = new Keycloak({
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: 'RTCPANAPAY',
+  clientId: 'login',
+});
 
 interface KeycloakProviderProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
-    const onKeycloakEvent = (event: any, error: any) => {
-        console.log('Keycloak event:', event, error);
-    };
+  // Handler function executed when the Keycloak instance is initialized
+  const onKeycloakEvent = (event: any) => {
+    console.log('Keycloak event:', event);
+  };
 
-    const onTokens = (tokens: any) => {
-        console.log('Keycloak tokens:', tokens);
-    };
+  // Handler function executed when the authentication status changes
+  const onKeycloakTokens = (tokens: any) => {
+    console.log('Keycloak tokens:', tokens);
+  };
 
-    return (
-        <ReactKeycloakProvider
-            authClient={keycloak}
-            onEvent={onKeycloakEvent}
-            onTokens={onTokens}
-            initOptions={{
-                onLoad: 'login-required',
-                checkLoginIframe: false,
-            }}
-        >
-            {children}
-        </ReactKeycloakProvider>
-    );
+  return (
+    <ReactKeycloakProvider
+      authClient={keycloakInstance}
+      onEvent={onKeycloakEvent}
+      onTokens={onKeycloakTokens}
+    >
+      {children}
+    </ReactKeycloakProvider>
+  );
 };
 
 export default KeycloakProvider;

@@ -1,27 +1,28 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import KeycloakProvider from './context/KeycloakProvider';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <KeycloakProvider>
-      <AuthProvider>
-        <Router>
-          <div className="min-h-screen bg-gray-100">
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route element={<PrivateRoute />}>
-                <Route path="/dashboard/*" element={<DashboardPage />} />
-              </Route>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-            </Routes>
-          </div>
-        </Router>
-      </AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
     </KeycloakProvider>
   );
 }

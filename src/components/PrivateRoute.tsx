@@ -1,23 +1,25 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuthLogs';
+
+import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
 
 interface PrivateRouteProps {
-    requiredRoles?: string[];
+  children: ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ requiredRoles = [] }) => {
-    const { isAuthenticated, hasRole } = useAuth();
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const { keycloak } = useKeycloak();
 
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
+  // Check if the user is authenticated
+  const isLoggedIn = keycloak.authenticated;
 
-    if (requiredRoles.length > 0 && !requiredRoles.some(role => hasRole(role))) {
-        return <Navigate to="/unauthorized" replace />;
-    }
+  // If not authenticated, redirect to the login page
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
 
-    return <Outlet />;
+  // If authenticated, render the child components
+  return <>{children}</>;
 };
 
 export default PrivateRoute;
