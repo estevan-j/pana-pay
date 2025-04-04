@@ -1,39 +1,25 @@
 
 import Keycloak from 'keycloak-js';
 
-// Configuration for Keycloak
-const keycloakConfig = {
-    url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080',
-    realm: import.meta.env.VITE_KEYCLOAK_REALM || 'adminpanapay',
-    clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'admin-panapay',
-};
+// Variable global para la instancia única
+let keycloakInstance: Keycloak | null = null;
 
-// Create a single Keycloak instance to be reused across the app
-const keycloakInstance = new Keycloak(keycloakConfig);
-
-// Track initialization state
-let initialized = false;
-
-// Prevent multiple initializations by not actually initializing here
-// Let ReactKeycloakProvider handle the initialization
-export const initializeKeycloak = async () => {
-    if (initialized) {
-        return Promise.resolve(keycloakInstance);
-    }
+// Función para obtener la instancia de Keycloak como singleton
+const getKeycloakInstance = (): Keycloak => {
+  if (!keycloakInstance) {
+    console.log('Creando nueva instancia de Keycloak'); // Para debug
+    const keycloakConfig = {
+      url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080',
+      realm: import.meta.env.VITE_KEYCLOAK_REALM || 'adminpanapay',
+      clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'admin-panapay',
+    };
     
-    try {
-        console.log('Keycloak instance returned without initialization');
-        return keycloakInstance;
-    } catch (error) {
-        console.error('Failed to get Keycloak instance:', error);
-        throw error;
-    }
+    keycloakInstance = new Keycloak(keycloakConfig);
+  } else {
+    console.log('Usando instancia existente de Keycloak'); // Para debug
+  }
+  
+  return keycloakInstance;
 };
 
-// Mark as initialized when ReactKeycloakProvider successfully initializes
-export const markAsInitialized = () => {
-    initialized = true;
-    console.log('Keycloak instance marked as initialized');
-};
-
-export default keycloakInstance;
+export default getKeycloakInstance;
