@@ -3,17 +3,11 @@ import React from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloakInstance from '../config/KeycloakConfig';
 
-interface KeycloakProviderProps {
-  children: React.ReactNode;
-}
-
-const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
-  // Handler function executed when the Keycloak instance is initialized
-  const onKeycloakEvent = (event: any) => {
-    console.log('Keycloak event:', event);
+const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const onKeycloakEvent = (event: string, error: any) => {
+    console.log('Keycloak event:', event, error);
   };
 
-  // Handler function executed when the authentication status changes
   const onKeycloakTokens = (tokens: any) => {
     console.log('Keycloak tokens:', tokens);
   };
@@ -25,7 +19,8 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
       onTokens={onKeycloakTokens}
       initOptions={{
         onLoad: 'check-sso',
-        checkLoginIframe: false
+        checkLoginIframe: false,
+        pkceMethod: 'S256'
       }}
     >
       {children}
