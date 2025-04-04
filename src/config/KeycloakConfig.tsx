@@ -3,7 +3,6 @@ import Keycloak from 'keycloak-js';
 
 // Variable global para la instancia única
 let keycloakInstance: Keycloak | null = null;
-let isInitialized: boolean = false;
 
 // Función para obtener la instancia de Keycloak como singleton
 const getKeycloakInstance = (): Keycloak => {
@@ -21,17 +20,6 @@ const getKeycloakInstance = (): Keycloak => {
   }
   
   return keycloakInstance;
-};
-
-// Mark as initialized when ReactKeycloakProvider successfully initializes
-export const markAsInitialized = () => {
-  isInitialized = true;
-  console.log('Keycloak instance marked as initialized');
-};
-
-// Check if Keycloak has been initialized
-export const isKeycloakInitialized = () => {
-  return isInitialized;
 };
 
 export default getKeycloakInstance;
