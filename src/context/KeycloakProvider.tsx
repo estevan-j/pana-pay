@@ -1,10 +1,13 @@
 
 import React, { useState } from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import keycloakInstance, { markAsInitialized } from '../config/KeycloakConfig';
+import getKeycloakInstance, { markAsInitialized } from '../config/KeycloakConfig';
 
 const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [initialized, setInitialized] = useState(false);
+  
+  // Important: Get the actual Keycloak instance before rendering
+  const keycloak = getKeycloakInstance();
 
   const onKeycloakEvent = (event: string, error: any) => {
     console.log('Keycloak event:', event, error);
@@ -32,7 +35,7 @@ const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children })
 
   return (
     <ReactKeycloakProvider
-      authClient={keycloakInstance}
+      authClient={keycloak}
       onEvent={onKeycloakEvent}
       onTokens={onKeycloakTokens}
       initOptions={{

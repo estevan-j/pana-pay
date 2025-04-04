@@ -3,6 +3,18 @@ import Keycloak from 'keycloak-js';
 
 // Variable global para la instancia única
 let keycloakInstance: Keycloak | null = null;
+let isInitialized: boolean = false;
+
+// Función para marcar la instancia como inicializada
+export const markAsInitialized = (): void => {
+  isInitialized = true;
+  console.log('Keycloak ha sido marcado como inicializado');
+};
+
+// Función para verificar si Keycloak está inicializado
+export const isKeycloakInitialized = (): boolean => {
+  return isInitialized;
+};
 
 // Función para obtener la instancia de Keycloak como singleton
 const getKeycloakInstance = (): Keycloak => {
