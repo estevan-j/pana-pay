@@ -1,10 +1,13 @@
 
 import React, { useState } from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import keycloakInstance, { markAsInitialized } from '../config/KeycloakConfig';
+import getKeycloakInstance, { markAsInitialized } from '../config/KeycloakConfig';
 
 const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [initialized, setInitialized] = useState(false);
+  
+  // Get the actual Keycloak instance (not the function)
+  const keycloakInstance = getKeycloakInstance();
 
   const onKeycloakEvent = (event: string, error: any) => {
     console.log('Keycloak event:', event, error);
