@@ -9,7 +9,9 @@ const useAuth = () => {
 
     const login = () => {
         if (initialized && keycloak) {
-            keycloak.login();
+            keycloak.login({
+                redirectUri: window.location.origin + '/dashboard'
+            });
         } else {
             console.warn('Keycloak not initialized, cannot login');
         }

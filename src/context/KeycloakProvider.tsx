@@ -40,9 +40,8 @@ const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children })
       onTokens={onKeycloakTokens}
       initOptions={{
         onLoad: 'check-sso',
-        checkLoginIframe: false,
-        pkceMethod: 'S256',
-        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+        checkLoginIframe: false, // Disable iframe check which can cause timeouts
+        pkceMethod: 'S256'
       }}
       LoadingComponent={LoadingComponent}
     >
