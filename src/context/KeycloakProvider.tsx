@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import keycloakInstance from '../config/KeycloakConfig';
+import keycloakInstance, { markAsInitialized } from '../config/KeycloakConfig';
 
 const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [initialized, setInitialized] = useState(false);
@@ -10,6 +10,7 @@ const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children })
     console.log('Keycloak event:', event, error);
     if (event === 'onReady') {
       setInitialized(true);
+      markAsInitialized(); // Mark the singleton as initialized
     } else if (event === 'onInitError') {
       console.error('Keycloak initialization error:', error);
     }

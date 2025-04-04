@@ -11,22 +11,29 @@ const keycloakConfig = {
 // Create a single Keycloak instance to be reused across the app
 const keycloakInstance = new Keycloak(keycloakConfig);
 
-// Prevent multiple initializations
+// Track initialization state
 let initialized = false;
 
+// Prevent multiple initializations by not actually initializing here
+// Let ReactKeycloakProvider handle the initialization
 export const initializeKeycloak = async () => {
     if (initialized) {
         return Promise.resolve(keycloakInstance);
     }
     
     try {
-        initialized = true;
+        console.log('Keycloak instance returned without initialization');
         return keycloakInstance;
     } catch (error) {
-        console.error('Failed to initialize Keycloak:', error);
-        initialized = false;
+        console.error('Failed to get Keycloak instance:', error);
         throw error;
     }
+};
+
+// Mark as initialized when ReactKeycloakProvider successfully initializes
+export const markAsInitialized = () => {
+    initialized = true;
+    console.log('Keycloak instance marked as initialized');
 };
 
 export default keycloakInstance;
