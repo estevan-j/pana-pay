@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 import LogoBlanco from '../assets/LogoBlanco.webp';
 
 const LoginPage = () => {
-  const { keycloak, initialized, isAuthenticated } = useAuth();
+  const { initialized, isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   const handleLogin = () => {
     if (initialized) {
-      keycloak.login();
+      login();
     }
   };
 

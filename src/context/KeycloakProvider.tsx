@@ -28,6 +28,11 @@ const KeycloakProvider: React.FC<{ children: React.ReactNode }> = ({ children })
         pkceMethod: 'S256',
         silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
       }}
+      loadingComponent={
+        <div className="flex items-center justify-center h-screen">
+          Loading authentication...
+        </div>
+      }
     >
       {children}
     </ReactKeycloakProvider>

@@ -1,16 +1,25 @@
 
 import { useKeycloak } from '@react-keycloak/web';
 
-export const useAuth = () => {
+const useAuth = () => {
     const { keycloak, initialized } = useKeycloak();
 
-    const isAuthenticated = keycloak.authenticated;
+    const isAuthenticated = keycloak?.authenticated || false;
 
-    const login = () => keycloak.login();
-    const logout = () => keycloak.logout({ redirectUri: window.location.origin });
+    const login = () => {
+        if (keycloak) {
+            keycloak.login();
+        }
+    };
+    
+    const logout = () => {
+        if (keycloak) {
+            keycloak.logout({ redirectUri: window.location.origin });
+        }
+    };
 
     const getUserInfo = () => {
-        if (isAuthenticated) {
+        if (isAuthenticated && keycloak.tokenParsed) {
             return {
                 username: keycloak.tokenParsed?.preferred_username,
                 email: keycloak.tokenParsed?.email,
@@ -22,14 +31,14 @@ export const useAuth = () => {
         return null;
     };
 
-    const getToken = () => keycloak.token;
+    const getToken = () => keycloak?.token;
 
     const hasRole = (role: string) => {
-        return keycloak.hasRealmRole(role);
+        return keycloak?.hasRealmRole(role) || false;
     };
 
     // For DashboardPage.tsx
-    const user = keycloak.tokenParsed?.preferred_username || 'Usuario';
+    const user = keycloak?.tokenParsed?.preferred_username || 'Usuario';
     const isAdmin = hasRole('admin');
 
     return {
