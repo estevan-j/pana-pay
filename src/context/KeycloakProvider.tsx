@@ -1,15 +1,7 @@
 
 import React from 'react';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
-import Keycloak from 'keycloak-js';
-
-// Create a single Keycloak instance outside of the component
-// This ensures it's only created once regardless of component re-renders
-const keycloakInstance = new Keycloak({
-  url: import.meta.env.VITE_KEYCLOAK_URL,
-  realm: 'RTCPANAPAY',
-  clientId: 'login',
-});
+import keycloakInstance from '../config/KeycloakConfig';
 
 interface KeycloakProviderProps {
   children: React.ReactNode;

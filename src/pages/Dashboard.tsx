@@ -1,13 +1,14 @@
 
-import { useKeycloak } from '@react-keycloak/web';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const Dashboard = () => {
-  const { keycloak } = useKeycloak();
+  const { logout, getUserInfo } = useAuth();
   const navigate = useNavigate();
+  const userInfo = getUserInfo();
 
   const handleLogout = () => {
-    keycloak.logout();
+    logout();
   };
 
   return (
@@ -26,9 +27,9 @@ const Dashboard = () => {
           
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Información de usuario</h2>
-            <p><strong>Usuario:</strong> {keycloak.tokenParsed?.preferred_username || 'No disponible'}</p>
-            <p><strong>Nombre:</strong> {keycloak.tokenParsed?.name || 'No disponible'}</p>
-            <p><strong>Email:</strong> {keycloak.tokenParsed?.email || 'No disponible'}</p>
+            <p><strong>Usuario:</strong> {userInfo?.username || 'No disponible'}</p>
+            <p><strong>Nombre:</strong> {userInfo?.name || 'No disponible'}</p>
+            <p><strong>Email:</strong> {userInfo?.email || 'No disponible'}</p>
           </div>
           
           <div className="mt-4">

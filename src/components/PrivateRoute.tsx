@@ -1,20 +1,17 @@
 
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
+import useAuth from '../hooks/useAuth';
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { keycloak } = useKeycloak();
-
-  // Check if the user is authenticated
-  const isLoggedIn = keycloak.authenticated;
+  const { isAuthenticated } = useAuth();
 
   // If not authenticated, redirect to the login page
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 

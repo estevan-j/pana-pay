@@ -1,6 +1,10 @@
+
+// Fix for the 'role' property missing in DashboardMenuProps
+// Only updating the specific parts where errors occur
+
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 import { UserCircle, Menu, X, LogOut } from 'lucide-react';
 import Logo from '../assets/Isotipo.webp';
 import MenuSection from './MenuSection';
@@ -215,6 +219,7 @@ const DashboardPage = () => {
           activeMenuItem={activeMenuItem}
           handleNavigation={handleNavigation}
           menuItems={menuItems}
+          role={isAdmin ? 'admin' : 'user'} // Add the required role prop
         />
       </MobileSidebar>
 
@@ -226,6 +231,7 @@ const DashboardPage = () => {
           activeMenuItem={activeMenuItem}
           handleNavigation={handleNavigation}
           menuItems={menuItems}
+          role={isAdmin ? 'admin' : 'user'} // Add the required role prop
         />
       </Sidebar>
 

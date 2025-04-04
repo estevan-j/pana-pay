@@ -1,2 +1,3 @@
 
-<lov-rename original_file_path="src/assets/LogoBlanco.webp" new_file_path="src/assets/Logo.webp" />
+// This file intentionally left empty as it's just a placeholder.
+// We'll use LogoBlanco.webp directly in components instead.
