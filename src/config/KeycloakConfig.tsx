@@ -1,3 +1,4 @@
+
 import Keycloak from 'keycloak-js';
 
 const keycloakConfig = {
@@ -6,6 +7,7 @@ const keycloakConfig = {
     clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'admin-panapay',
 };
 
+// Create a single Keycloak instance to be reused across the app
 const keycloakInstance = new Keycloak(keycloakConfig);
 
 export default keycloakInstance;

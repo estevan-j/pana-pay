@@ -6,7 +6,7 @@ export const useAuth = () => {
 
     const isAuthenticated = keycloak.authenticated;
 
-    const login = keycloak.login;
+    const login = () => keycloak.login();
     const logout = () => keycloak.logout({ redirectUri: window.location.origin });
 
     const getUserInfo = () => {

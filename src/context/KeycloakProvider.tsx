@@ -23,6 +23,10 @@ const KeycloakProvider: React.FC<KeycloakProviderProps> = ({ children }) => {
       authClient={keycloakInstance}
       onEvent={onKeycloakEvent}
       onTokens={onKeycloakTokens}
+      initOptions={{
+        onLoad: 'check-sso',
+        checkLoginIframe: false
+      }}
     >
       {children}
     </ReactKeycloakProvider>

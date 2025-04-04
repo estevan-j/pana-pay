@@ -8,7 +8,12 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, initialized } = useAuth();
+  
+  // If Keycloak is not initialized yet, show loading or return null
+  if (!initialized) {
+    return <div>Loading...</div>;
+  }
 
   // If not authenticated, redirect to the login page
   if (!isAuthenticated) {

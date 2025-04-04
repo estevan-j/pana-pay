@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import Logo from '../assets/Logo.webp'; // Make sure this path is correct
+import LogoBlanco from '../assets/LogoBlanco.webp';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <div className="flex flex-col items-center mb-6">
-          <img src={Logo} alt="PanaPay Logo" className="h-16 mb-4" />
+          <img src={LogoBlanco} alt="PanaPay Logo" className="h-16 mb-4" />
           <h1 className="text-2xl font-bold text-gray-800">PanaPay</h1>
           <p className="text-gray-600 text-center mt-2">
             Bienvenido a la plataforma de interoperabilidad de Coonecta
