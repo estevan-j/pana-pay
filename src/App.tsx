@@ -1,15 +1,14 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import getKeycloakInstance from './config/KeycloakConfig';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import Dashboard from './pages/Dashboard';
+import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './components/PrivateRoute';
-import KeycloakProvider from './context/KeycloakProvider';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <KeycloakProvider>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -18,14 +17,14 @@ function App() {
             path="/dashboard/*"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <DashboardPage />
               </PrivateRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-    </KeycloakProvider>
+    </AuthProvider>
   );
 }
 

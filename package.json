@@ -11,7 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-keycloak/web": "^3.4.0",
     "@supabase/supabase-js": "^2.49.1",
     "bcryptjs": "^3.0.2",
     "crypto-js": "^4.2.0",

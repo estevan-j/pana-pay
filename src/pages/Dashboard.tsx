@@ -1,14 +1,14 @@
 
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
-  const { logout, getUserInfo } = useAuth();
+  const { logout, user, isAdmin } = useAuth();
   const navigate = useNavigate();
-  const userInfo = getUserInfo();
 
   const handleLogout = () => {
     logout();
+    navigate('/login');
   };
 
   return (
@@ -27,9 +27,8 @@ const Dashboard = () => {
           
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Información de usuario</h2>
-            <p><strong>Usuario:</strong> {userInfo?.username || 'No disponible'}</p>
-            <p><strong>Nombre:</strong> {userInfo?.name || 'No disponible'}</p>
-            <p><strong>Email:</strong> {userInfo?.email || 'No disponible'}</p>
+            <p><strong>Usuario:</strong> {user || 'No disponible'}</p>
+            <p><strong>Rol:</strong> {isAdmin ? 'Administrador' : 'Usuario'}</p>
           </div>
           
           <div className="mt-4">
