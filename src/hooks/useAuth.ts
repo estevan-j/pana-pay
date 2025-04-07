@@ -1,3 +1,4 @@
+
 import { useKeycloak } from '@react-keycloak/web';
 import { logAuthAttempt } from '../services/authLogService';
 import { useEffect, useCallback } from 'react';
@@ -46,15 +47,18 @@ export const useAuth = () => {
     const handleAuthenticationLogging = async () => {
       if (isAuthenticated && initialized) {
         try {
+          console.log('User authenticated, logging attempt');
           const userInfo = getUserInfo();
           if (userInfo?.email) {
             await logAuthAttempt({ 
               email: userInfo.email,
               username: userInfo.username 
             });
+          } else {
+            console.warn('Cannot log auth attempt: missing email in user info', userInfo);
           }
         } catch (error) {
-          console.error('Error al registrar el intento de autenticación:', error);
+          console.error('Error logging authentication attempt:', error);
         }
       }
     };

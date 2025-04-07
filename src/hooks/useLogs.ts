@@ -1,6 +1,6 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import supabase from '../lib/supabase';
-
 
 export interface AuthLog {
     id: number;
@@ -33,26 +33,24 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
     const [filters, setFilters] = useState<FilterParams>({});
 
     const fetchAuthLogs = async () => {
-        if (!username) {
-            setError('Usuario no autenticado');
-            setLoading(false);
-            return;
-        }
-
         try {
             setLoading(true);
+            console.log('Fetching auth logs...');
+            
             // Consulta directa a la tabla auth_logs
             const { data, error } = await supabase
                 .from('auth_logs')
-                .select('*');
+                .select('*')
+                .order('login_timestamp', { ascending: false });
             
-            console.log('data:', data);
+            console.log('Supabase auth_logs response:', { data, error });
 
             if (error) throw new Error(error.message);
 
             setLogs(data || []);
             setError(null);
         } catch (err) {
+            console.error('Error fetching auth logs:', err);
             setError(err instanceof Error ? err.message : 'Error al cargar los registros');
         } finally {
             setLoading(false);
@@ -61,41 +59,9 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
 
     useEffect(() => {
         let isMounted = true;
-
-        const load = async () => {
-            if (!username) {
-                if (isMounted) {
-                    setError('Usuario no autenticado');
-                    setLoading(false);
-                }
-                return;
-            }
-
-            try {
-                // Consulta directa a la tabla auth_logs
-                const { data, error } = await supabase
-                    .from('auth_logs')
-                    .select('*');
-
-                if (error) throw new Error(error.message);
-
-                if (isMounted) {
-                    setLogs(data || []);
-                    setError(null);
-                }
-            } catch (err) {
-                console.error('Error al obtener registros:', err);
-                if (isMounted) {
-                    setError(err instanceof Error ? err.message : 'Error al cargar los registros');
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        load();
+        console.log('useAuthLogs hook initialized with username:', username);
+        
+        fetchAuthLogs();
 
         return () => {
             isMounted = false;
