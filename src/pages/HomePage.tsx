@@ -9,16 +9,12 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('HomePage - Authentication state:', { initialized, isAuthenticated });
-    
     // Si ya está autenticado, redirigir al dashboard
     if (isAuthenticated) {
-      console.log('User is authenticated, redirecting to dashboard');
       navigate('/dashboard');
     }
     // Si está inicializado pero no autenticado, iniciar sesión automáticamente
     else if (initialized && !isAuthenticated) {
-      console.log('User is not authenticated, initiating Keycloak login');
       // Give small delay to ensure proper redirect handling
       setTimeout(() => {
         login();

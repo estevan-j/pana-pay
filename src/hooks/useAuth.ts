@@ -7,10 +7,7 @@ export const useAuth = () => {
   const isAuthenticated = keycloak.authenticated;
 
   const login = () => {
-    console.log('Attempting to login with Keycloak');
-    console.log('Current auth state:', { initialized, isAuthenticated });
     return keycloak.login({
-      // Adding redirectUri to ensure proper redirect after login
       redirectUri: window.location.origin
     });
   };
@@ -36,6 +33,7 @@ export const useAuth = () => {
   const getToken = () => {
     return keycloak.token;
   };
+  
   const getRoles = () => {
     if (keycloak.tokenParsed?.realm_access?.roles) {
       return keycloak.tokenParsed.realm_access.roles;

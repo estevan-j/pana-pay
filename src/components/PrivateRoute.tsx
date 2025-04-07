@@ -10,8 +10,6 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const { isAuthenticated, initialized, login } = useAuth();
 
   useEffect(() => {
-    console.log('PrivateRoute - Authentication state:', { initialized, isAuthenticated });
-    
     if (initialized && !isAuthenticated) {
       // Give small delay to ensure proper redirect handling
       setTimeout(() => {

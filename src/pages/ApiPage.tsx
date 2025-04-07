@@ -15,17 +15,14 @@ const ApiPage: React.FC = () => {
   useEffect(() => {
     const fetchJsonData = async () => {
       try {
-        console.log('Fetching JSON file from /ApiPanaPay2.json');
         setLoading(true);
         const response = await fetch('/ApiPanaPay2.json');
         
-        console.log('Response status:', response.status);
         if (!response.ok) {
           throw new Error(`Failed to fetch JSON: ${response.status} ${response.statusText}`);
         }
         
         const data = await response.json();
-        console.log('JSON data loaded successfully', Object.keys(data));
         setJsonData(data);
         setError(null);
       } catch (error) {
@@ -41,7 +38,6 @@ const ApiPage: React.FC = () => {
 
   const handleExportJson = () => {
     if (!jsonData) {
-      console.error('No JSON data to export');
       return;
     }
     const jsonString = JSON.stringify(jsonData, null, 2);
@@ -59,7 +55,6 @@ const ApiPage: React.FC = () => {
           const parsedJson = JSON.parse(content);
           setJsonData(parsedJson);
           setError(null);
-          console.log('Custom JSON uploaded successfully');
         } catch (error) {
           console.error('Error parsing JSON:', error);
           setError('Error al cargar el archivo JSON. Por favor, verifica el formato.');
