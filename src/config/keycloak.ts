@@ -11,11 +11,4 @@ const keycloakConfig = {
 // Inicializar instancia de Keycloak
 const keycloak = new Keycloak(keycloakConfig);
 
-// Add debugging
-console.log('Keycloak config:', {
-  url: keycloakConfig.url,
-  realm: keycloakConfig.realm,
-  clientId: keycloakConfig.clientId
-});
-
 export default keycloak;

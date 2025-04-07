@@ -13,7 +13,7 @@ import FuncionamientoPage from "../pages/dashboard/FuncionamientoPage";
 import HistorialCambiosPage from "../pages/dashboard/HistorialCambios";
 import HomePage from "../pages/dashboard/HomePage";
 import QRPage from "../pages/dashboard/QRPage";
-// import RegistrosPage from "../pages/dashboard/RegistrosPage";
+import RegistrosPage from "../pages/dashboard/RegistrosPage";
 import ReversoCreditoPage from "../pages/dashboard/ReversoCreditoPage";
 import ReversoDebitoPage from "../pages/dashboard/ReversoDebitoPage";
 import SeguridadPage from "../pages/dashboard/SeguridadPage";
@@ -27,7 +27,7 @@ export const ROUTES_CONFIG = [
   { path: "/historial-cambios", element: HistorialCambiosPage, category: "services", id: "historial-cambios" },
   { path: "/catalogos", element: Catalogos, category: "services", id: "catalogos" },
   { path: "/afiliacion-masiva", element: AfiliacionMasivaPage, category: "services", id: "afiliacion-masiva" },
-  // { path: "/registros", element: RegistrosPage, category: "services", id: "registros" },
+  { path: "/registros", element: RegistrosPage, category: "services", id: "registros" },
   { path: "/QR", element: QRPage, category: "services", id: "QR" },
   { path: "/afiliacion", element: AfiliacionPage, category: "administrative", id: "afiliacion" },
   { path: "/desafiliacion", element: DesafiliacionPage, category: "administrative", id: "desafiliacion" },
