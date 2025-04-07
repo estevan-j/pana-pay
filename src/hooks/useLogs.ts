@@ -4,7 +4,7 @@ import supabase from '../lib/supabase';
 
 export interface AuthLog {
     id: number;
-    username: string;
+    email: string;
     login_timestamp: string;
     ip_address: string | null;
     country: string | null;
@@ -69,7 +69,7 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
     const filteredLogs = useMemo(() => {
         return logs.filter(log => {
             // Filtro por nombre de usuario
-            if (filters.username && !log.username.toLowerCase().includes(filters.username.toLowerCase())) {
+            if (filters.username && !log.email.toLowerCase().includes(filters.username.toLowerCase())) {
                 return false;
             }
             

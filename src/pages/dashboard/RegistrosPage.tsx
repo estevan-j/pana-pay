@@ -170,7 +170,7 @@ const LogsTable: React.FC<{ logs: AuthLog[], formatDate: (date: string) => strin
                 {logs.map((log) => (
                     <tr key={log.id} className="hover:bg-gray-50">
                         <td className="px-3 py-4">
-                            <div className="text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">{log.username}</div>
+                            <div className="text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">{log.email}</div>
                         </td>
                         <td className="px-3 py-4">
                             <div className="text-sm text-gray-500 truncate max-w-[120px] sm:max-w-none">{formatDate(log.login_timestamp)}</div>
