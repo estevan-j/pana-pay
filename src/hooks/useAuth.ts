@@ -36,13 +36,16 @@ export const useAuth = () => {
   
   const getRoles = () => {
     if (keycloak.tokenParsed?.realm_access?.roles) {
+      console.log('Roles:', keycloak.tokenParsed.realm_access.roles);
       return keycloak.tokenParsed.realm_access.roles;
     }
+    console.error('No roles found in tokenParsed');
     return [];
   };
 
   const roles = getRoles();
   const isAdmin = roles.includes(import.meta.env.VITE_APP_ALLOWED_ROLE);
+
 
   const user = keycloak.tokenParsed?.preferred_username || null;
 
