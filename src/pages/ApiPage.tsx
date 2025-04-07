@@ -10,8 +10,7 @@ const ApiPage: React.FC = () => {
   const [jsonData, setJsonData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { hasRole } = useAuth();
-  const isAdmin = hasRole('admin');
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const fetchJsonData = async () => {
