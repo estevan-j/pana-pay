@@ -16,10 +16,8 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   // Opciones de inicialización - configurada para iniciar sesión automáticamente
   const initOptions = {
     onLoad: 'login-required',
-    silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-    pkceMethod: 'S256',
-    checkLoginIframe: false, // Deshabilita el iframe para evitar problemas de cookies
-  } as const;
+    checkLoginIframe: false,
+  };
 
   return (
     <ReactKeycloakProvider

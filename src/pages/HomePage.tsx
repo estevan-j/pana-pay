@@ -1,9 +1,23 @@
 
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import LogoBlanco from '../assets/LogoBlanco.webp';
 
 const HomePage = () => {
+  const { isAuthenticated, login, initialized } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Si ya está autenticado, redirigir al dashboard
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+    // Si está inicializado pero no autenticado, iniciar sesión automáticamente
+    else if (initialized && !isAuthenticated) {
+      login();
+    }
+  }, [isAuthenticated, initialized, navigate, login]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -16,14 +30,12 @@ const HomePage = () => {
           </p>
         </div>
         
-        <div className="flex flex-col space-y-4">
-          <button
-            onClick={() => navigate('/login')}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-          >
-            Iniciar Sesión
-          </button>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
         </div>
+        <p className="text-center mt-4 text-gray-600">
+          Iniciando sesión...
+        </p>
       </div>
     </div>
   );

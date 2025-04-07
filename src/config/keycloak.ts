@@ -6,7 +6,6 @@ const keycloakConfig = {
   url: import.meta.env.VITE_KEYCLOAK_URL || 'https://129.153.38.200.nip.io/auth',
   realm: import.meta.env.VITE_KEYCLOAK_REALM || 'adminpanapay',
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'admin-panapay',
-  checkLoginIframe: false, 
 };
 
 // Inicializar instancia de Keycloak
