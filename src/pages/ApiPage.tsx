@@ -3,7 +3,7 @@ import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import { Download, Upload } from 'lucide-react';
 import { saveAs } from 'file-saver';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const ApiPage: React.FC = () => {
   const [jsonData, setJsonData] = useState<any>(null);

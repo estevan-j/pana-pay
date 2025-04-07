@@ -1,11 +1,12 @@
+
 import { ROUTES_CONFIG } from '../config/routesConfig';
+import { MenuItem } from './Interfaces';
 
 // Function to format menu item labels
 export const formatMenuLabel = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
 
-
 // Function to generate menu items for a category (sin filtrar por rol)
-export const generateMenuItems = (category: string, isAdmin: boolean) => {
+export const generateMenuItems = (category: string, isAdmin: boolean): MenuItem[] => {
   return ROUTES_CONFIG
     .filter(route => {
       // Primero verificamos que la ruta pertenezca a la categoría correcta
@@ -19,7 +20,7 @@ export const generateMenuItems = (category: string, isAdmin: boolean) => {
     })
     .map(item => ({
       id: item.id,
-      label: formatMenuLabel(item.id),
-      route: `/dashboard${item.path}`
+      name: formatMenuLabel(item.id),
+      path: `/dashboard${item.path}`
     }));
 };

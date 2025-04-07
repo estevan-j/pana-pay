@@ -1,11 +1,13 @@
+
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
+import { MenuItem } from '../utils/Interfaces';
 
 interface MenuSectionProps {
     title: string;
     isOpen: boolean;
     onToggle: () => void;
-    items: { id: string; label: string; route: string }[];
+    items: MenuItem[];
     activeMenuItem: string;
     handleMenuClick: (route: string, menuItem: string) => void;
 }
@@ -25,9 +27,9 @@ const MenuSection: React.FC<MenuSectionProps> = ({ title, isOpen, onToggle, item
                     <div
                         key={item.id}
                         className={`menu-item ${activeMenuItem === item.id ? 'active' : ''}`}
-                        onClick={() => handleMenuClick(item.route, item.id)}
+                        onClick={() => handleMenuClick(item.path, item.id)}
                     >
-                        {item.label}
+                        {item.name}
                     </div>
                 ))}
             </div>
