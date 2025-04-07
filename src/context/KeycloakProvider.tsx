@@ -13,11 +13,12 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
     console.log('Keycloak event:', event, error);
   };
 
-  // Opciones de inicialización
+  // Opciones de inicialización - configurada para iniciar sesión automáticamente
   const initOptions = {
     onLoad: 'check-sso',
     silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
     pkceMethod: 'S256',
+    checkLoginIframe: false, // Deshabilita el iframe para evitar problemas de cookies
   } as const;
 
   return (
@@ -25,6 +26,12 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
       authClient={keycloak}
       initOptions={initOptions}
       onEvent={eventLogger}
+      LoadingComponent={
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          <p className="ml-3 text-lg">Conectando con Keycloak...</p>
+        </div>
+      }
     >
       {children}
     </ReactKeycloakProvider>

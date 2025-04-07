@@ -12,8 +12,8 @@ function App() {
     <KeycloakProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/dashboard/*"
             element={

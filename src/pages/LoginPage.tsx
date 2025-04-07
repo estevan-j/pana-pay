@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import LogoBlanco from '../assets/LogoBlanco.webp';
 
 const LoginPage = () => {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, login, initialized } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,11 +13,11 @@ const LoginPage = () => {
     if (isAuthenticated) {
       navigate('/dashboard');
     }
-  }, [isAuthenticated, navigate]);
-
-  const handleLogin = () => {
-    login();
-  };
+    // Si está inicializado pero no autenticado, iniciar sesión automáticamente
+    else if (initialized && !isAuthenticated) {
+      login();
+    }
+  }, [isAuthenticated, initialized, navigate, login]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -26,16 +26,13 @@ const LoginPage = () => {
           <img src={LogoBlanco} alt="PanaPay Logo" className="h-16 mb-4" />
           <h1 className="text-2xl font-bold text-gray-800">PanaPay</h1>
           <p className="text-gray-600 text-center mt-2">
-            La plataforma de interoperabilidad de Coonecta
+            Iniciando sesión...
           </p>
         </div>
         
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-        >
-          Iniciar Sesión con Keycloak
-        </button>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+        </div>
       </div>
     </div>
   );

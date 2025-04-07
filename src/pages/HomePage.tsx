@@ -23,13 +23,6 @@ const HomePage = () => {
           >
             Iniciar Sesión
           </button>
-          
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="w-full bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 transition-colors"
-          >
-            Dashboard
-          </button>
         </div>
       </div>
     </div>
