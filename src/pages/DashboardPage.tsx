@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../context/AuthContext';
 import { UserCircle, Menu, X, LogOut } from 'lucide-react';
 import Logo from '../assets/Isotipo.webp';
 import MenuSection from './MenuSection';
