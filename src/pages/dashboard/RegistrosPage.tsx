@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Info, AlertCircle, Map, Globe, Search, X, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAuth } from '../../hooks/useAuth';
-import axios from 'axios';
+import { AuthLog, useAuthLogs } from '@/hooks/useLogs';
+import { useAuth } from '@/hooks/useAuth';
 
 interface FormatDateOptions {
     year: 'numeric';
@@ -11,34 +11,6 @@ interface FormatDateOptions {
     minute: '2-digit';
     second: '2-digit';
     hour12: boolean;
-}
-
-interface AuthLog {
-    id: string;
-    time: number;
-    type: string;
-    realmId: string;
-    clientId: string;
-    userId: string;
-    sessionId: string;
-    ipAddress: string;
-    error: string;
-    details: {
-        username?: string;
-        auth_method?: string;
-        auth_type?: string;
-        register_method?: string;
-        remember_me?: boolean;
-        redirect_uri?: string;
-        code_id?: string;
-        consent?: string;
-        identity_provider?: string;
-        country?: string;
-        [key: string]: any;
-    };
-    username?: string; // Campo calculado para mostrar
-    country?: string; // Campo calculado para mostrar
-    login_timestamp?: string; // Campo calculado para mostrar
 }
 
 // Componentes separados para mejor legibilidad
@@ -198,23 +170,21 @@ const LogsTable: React.FC<{ logs: AuthLog[], formatDate: (date: string) => strin
                 {logs.map((log) => (
                     <tr key={log.id} className="hover:bg-gray-50">
                         <td className="px-3 py-4">
-                            <div className="text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">{log.username || 'Desconocido'}</div>
+                            <div className="text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">{log.username}</div>
                         </td>
                         <td className="px-3 py-4">
-                            <div className="text-sm text-gray-500 truncate max-w-[120px] sm:max-w-none">
-                                {formatDate(log.login_timestamp || new Date(log.time).toISOString())}
-                            </div>
+                            <div className="text-sm text-gray-500 truncate max-w-[120px] sm:max-w-none">{formatDate(log.login_timestamp)}</div>
                         </td>
                         <td className="px-3 py-4 hidden sm:table-cell">
                             <div className="text-sm text-gray-500 flex items-center">
                                 <Map className="h-4 w-4 min-w-[16px] mr-2 text-gray-400" />
-                                <span className="truncate">{log.ipAddress || 'No disponible'}</span>
+                                <span className="truncate">{log.ip_address || 'No disponible'}</span>
                             </div>
                         </td>
                         <td className="px-3 py-4 hidden sm:table-cell">
                             <div className="text-sm text-gray-500 flex items-center">
                                 <Globe className="h-4 w-4 min-w-[16px] mr-2 text-gray-400" />
-                                <span className="truncate">{log.country || log.details?.country || 'Desconocido'}</span>
+                                <span className="truncate">{log.country || 'Desconocido'}</span>
                             </div>
                         </td>
                     </tr>
@@ -337,106 +307,9 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
     );
 };
 
-// Hook para obtener los logs de Keycloak
-const useKeycloakLogs = (user: string | null) => {
-    const [logs, setLogs] = useState<AuthLog[]>([]);
-    const [filteredLogs, setFilteredLogs] = useState<AuthLog[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const { getToken, isAdmin } = useAuth();
-
-    const fetchLogs = useCallback(async () => {
-        if (!user) {
-            setLoading(false);
-            setError('Usuario no autenticado');
-            return;
-        }
-
-        if (!isAdmin) {
-            setLoading(false);
-            setError('Acceso denegado. Solo los administradores pueden ver los registros.');
-            return;
-        }
-
-        try {
-            setLoading(true);
-            
-            // Obtener el token para la autenticación
-            const token = getToken();
-            if (!token) {
-                throw new Error('No se pudo obtener el token de autenticación');
-            }
-            
-            // Realizar la solicitud a la API de administración de Keycloak
-            const keycloakBaseUrl = import.meta.env.VITE_APP_KEYCLOAK_URL; 
-            const realm = import.meta.env.VITE_APP_KEYCLOAK_REALM;
-            const apiUrl = `${keycloakBaseUrl}/admin/realms/${realm}/events?type=LOGIN`;
-            
-            const response = await axios.get(apiUrl, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            
-            // Transformar los datos recibidos
-            const processedLogs = response.data.map((event: any) => {
-                return {
-                    ...event,
-                    username: event.details?.username || 'Desconocido',
-                    login_timestamp: new Date(event.time).toISOString(),
-                    country: event.details?.country || 'Desconocido'
-                };
-            });
-            
-            setLogs(processedLogs);
-            setFilteredLogs(processedLogs);
-            setLoading(false);
-        } catch (err) {
-            console.error('Error al obtener los eventos de Keycloak:', err);
-            setError('No se pudieron cargar los registros. Verifique los permisos o inténtelo de nuevo más tarde.');
-            setLoading(false);
-        }
-    }, [user, isAdmin, getToken]);
-
-    useEffect(() => {
-        fetchLogs();
-    }, [fetchLogs]);
-
-    const filterLogs = useCallback(
-        (params: { username?: string; startDate?: string; endDate?: string }) => {
-            let filtered = [...logs];
-
-            if (params.username) {
-                filtered = filtered.filter((log) => 
-                    log.username?.toLowerCase().includes(params.username!.toLowerCase())
-                );
-            }
-
-            if (params.startDate) {
-                const startTimestamp = new Date(params.startDate).getTime();
-                filtered = filtered.filter((log) => new Date(log.time).getTime() >= startTimestamp);
-            }
-
-            if (params.endDate) {
-                const endTimestamp = new Date(params.endDate).setHours(23, 59, 59, 999);
-                filtered = filtered.filter((log) => new Date(log.time).getTime() <= endTimestamp);
-            }
-
-            setFilteredLogs(filtered);
-        },
-        [logs]
-    );
-
-    const clearFilters = useCallback(() => {
-        setFilteredLogs(logs);
-    }, [logs]);
-
-    return { logs, filteredLogs, loading, error, filterLogs, clearFilters };
-};
-
 const RegistrosPage: React.FC = () => {
     const { user } = useAuth();
-    const { filteredLogs, loading, error, filterLogs, clearFilters } = useKeycloakLogs(user);
+    const { filteredLogs, loading, error, filterLogs, clearFilters } = useAuthLogs(user);
     const [isFiltering, setIsFiltering] = useState(false);
 
     // Estado para la paginación

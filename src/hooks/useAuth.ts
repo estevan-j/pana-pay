@@ -1,23 +1,24 @@
-
 import { useKeycloak } from '@react-keycloak/web';
+import { logAuthAttempt } from '../services/authLogService';
+import { useEffect, useCallback } from 'react';
 
 export const useAuth = () => {
   const { keycloak, initialized } = useKeycloak();
 
-  const isAuthenticated = keycloak.authenticated;
+  const isAuthenticated = keycloak?.authenticated || false;
 
-  const login = () => {
+  const login = useCallback(() => {
     return keycloak.login({
       redirectUri: window.location.origin
     });
-  };
+  }, [keycloak]);
   
-  const logout = () => {
+  const logout = useCallback(() => {
     return keycloak.logout({ redirectUri: window.location.origin });
-  };
+  }, [keycloak]);
 
-  const getUserInfo = () => {
-    if (isAuthenticated) {
+  const getUserInfo = useCallback(() => {
+    if (isAuthenticated && keycloak?.tokenParsed) {
       const userInfo = {
         username: keycloak.tokenParsed?.preferred_username,
         email: keycloak.tokenParsed?.email,
@@ -28,26 +29,42 @@ export const useAuth = () => {
       return userInfo;
     }
     return null;
-  };
+  }, [isAuthenticated, keycloak]);
 
-  const getToken = () => {
-    return keycloak.token;
-  };
+  const getToken = useCallback(() => {
+    return keycloak?.token;
+  }, [keycloak]);
   
-  const getRoles = () => {
-    if (keycloak.tokenParsed?.realm_access?.roles) {
-      console.log('Roles:', keycloak.tokenParsed.realm_access.roles);
+  const getRoles = useCallback(() => {
+    if (keycloak?.tokenParsed?.realm_access?.roles) {
       return keycloak.tokenParsed.realm_access.roles;
     }
-    console.error('No roles found in tokenParsed');
     return [];
-  };
+  }, [keycloak]);
+
+  useEffect(() => {
+    const handleAuthenticationLogging = async () => {
+      if (isAuthenticated && initialized) {
+        try {
+          const userInfo = getUserInfo();
+          if (userInfo?.email) {
+            await logAuthAttempt({ 
+              email: userInfo.email,
+              username: userInfo.username 
+            });
+          }
+        } catch (error) {
+          console.error('Error al registrar el intento de autenticación:', error);
+        }
+      }
+    };
+
+    handleAuthenticationLogging();
+  }, [isAuthenticated, initialized, getUserInfo]);
 
   const roles = getRoles();
   const isAdmin = roles.includes(import.meta.env.VITE_APP_ALLOWED_ROLE);
-
-
-  const user = keycloak.tokenParsed?.preferred_username || null;
+  const user = keycloak?.tokenParsed?.preferred_username || null;
 
   return {
     isAuthenticated,
