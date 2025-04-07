@@ -43,14 +43,11 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
                 .select('*')
                 .order('login_timestamp', { ascending: false });
             
-            console.log('Supabase auth_logs response:', { data, error });
-
             if (error) throw new Error(error.message);
 
             setLogs(data || []);
             setError(null);
         } catch (err) {
-            console.error('Error fetching auth logs:', err);
             setError(err instanceof Error ? err.message : 'Error al cargar los registros');
         } finally {
             setLoading(false);

@@ -47,16 +47,13 @@ export const useAuth = () => {
     const handleAuthenticationLogging = async () => {
       if (isAuthenticated && initialized) {
         try {
-          console.log('User authenticated, logging attempt');
           const userInfo = getUserInfo();
           if (userInfo?.email) {
             await logAuthAttempt({ 
               email: userInfo.email,
               username: userInfo.username 
             });
-          } else {
-            console.warn('Cannot log auth attempt: missing email in user info', userInfo);
-          }
+          } 
         } catch (error) {
           console.error('Error logging authentication attempt:', error);
         }
