@@ -8,6 +8,8 @@ import KeycloakProvider from './context/KeycloakProvider';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 
 function App() {
+  console.log('App component rendering');
+  
   return (
     <KeycloakProvider>
       <Router>
