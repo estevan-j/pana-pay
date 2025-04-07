@@ -39,6 +39,7 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   const initOptions = {
     onLoad: 'login-required',
     checkLoginIframe: false,
+    pkceMethod: 'S256',
     // enableLogging: true, // Enable Keycloak's internal logging
   };
 
