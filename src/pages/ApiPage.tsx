@@ -12,7 +12,7 @@ const ApiPage: React.FC = () => {
   useEffect(() => {
     const fetchJsonData = async () => {
       try {
-        const response = await fetch('/ApiPanaPay 2.json');
+        const response = await fetch('/ApiPanaPay2.json');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
