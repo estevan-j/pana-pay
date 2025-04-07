@@ -41,18 +41,18 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
 
         try {
             setLoading(true);
+            // Consulta directa a la tabla auth_logs
             const { data, error } = await supabase
                 .from('auth_logs')
-                .select('*')
-                .order('login_timestamp', { ascending: false });
+                .select('*');
             
+            console.log('data:', data);
 
             if (error) throw new Error(error.message);
 
             setLogs(data || []);
             setError(null);
         } catch (err) {
-            console.error('Error al obtener registros:', err);
             setError(err instanceof Error ? err.message : 'Error al cargar los registros');
         } finally {
             setLoading(false);
@@ -72,9 +72,10 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
             }
 
             try {
-                const { data, error } = await supabase.rpc('get_auth_logs', {
-                    admin_username: username
-                });
+                // Consulta directa a la tabla auth_logs
+                const { data, error } = await supabase
+                    .from('auth_logs')
+                    .select('*');
 
                 if (error) throw new Error(error.message);
 
