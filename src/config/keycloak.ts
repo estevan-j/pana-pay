@@ -3,9 +3,9 @@ import Keycloak from 'keycloak-js';
 
 // Configuración de Keycloak
 const keycloakConfig = {
-  url: import.meta.env.VITE_KEYCLOAK_URL || 'https://129.153.38.200.nip.io/auth',
-  realm: 'adminpanapay',
-  clientId: 'admin-panapay'
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM || 'adminpanapay', // Valor por defecto
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'admin-panapay' // Valor por defecto
 };
 
 // Inicializar instancia de Keycloak

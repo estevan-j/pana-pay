@@ -9,6 +9,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/auth": {
+        target: "https://129.153.38.200.nip.io/auth",
+        changeOrigin: true,
+        secure: false, // Cambia a true si el certificado SSL es válido
+      },
+    },
   },
   plugins: [
     react(),
