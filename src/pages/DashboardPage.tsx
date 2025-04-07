@@ -1,18 +1,15 @@
-
-// Fix for the 'role' property missing in DashboardMenuProps
-// Only updating the specific parts where errors occur
-
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { UserCircle, Menu, X, LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 import Logo from '../assets/Isotipo.webp';
 import MenuSection from './MenuSection';
 import { ROUTES_CONFIG } from '../config/routesConfig';
 import { generateMenuItems } from '../utils/utils';
-import { DashboardMenuProps, HeaderProps, MobileHeaderProps, MobileSidebarProps } from '../utils/Interfaces';
+import { HeaderProps, MobileHeaderProps, MobileSidebarProps } from '../utils/Interfaces';
 
 // =============== COMPONENTS ===============
+
 const Header = React.memo(({ user, onHomeClick, onLogout }: HeaderProps) => (
   <header className="hidden md:flex bg-white shadow-sm p-4 justify-between items-center">
     <button className="text-menu font-bold hover:text-menu-hover transition-colors" onClick={onHomeClick}>
@@ -48,6 +45,7 @@ const MobileHeader = React.memo(({ onToggleMenu, onHomeClick, onLogout, isMenuOp
 ));
 
 // Navigation Components
+
 const Sidebar: React.FC<{ children: React.ReactNode }> = React.memo(({ children }) => (
   <div className="hidden md:block bg-white shadow-md p-4 h-screen sticky top-0 sidebar-scroll sidebar-fixed">
     <div className="mb-8 text-center">
@@ -75,6 +73,23 @@ const MobileSidebar = React.memo(({ children, isOpen, onClose }: MobileSidebarPr
     </div>
   </div>
 ));
+
+// Update the DashboardMenu interface to remove role
+interface DashboardMenuProps {
+  menuState: {
+    admin: boolean;
+    services: boolean;
+    financial: boolean;
+  };
+  toggleMenu: (menuKey: string) => void;
+  activeMenuItem: string;
+  handleNavigation: (route: string, menuItem: string) => void;
+  menuItems: {
+    serviciosItems: { id: string; name: string; path: string }[];
+    adminItems: { id: string; name: string; path: string }[];
+    financialItems: { id: string; name: string; path: string }[];
+  };
+}
 
 const DashboardMenu: React.FC<DashboardMenuProps> = React.memo(({
   menuState,
@@ -219,7 +234,6 @@ const DashboardPage = () => {
           activeMenuItem={activeMenuItem}
           handleNavigation={handleNavigation}
           menuItems={menuItems}
-          role={isAdmin ? 'admin' : 'user'} // Add the required role prop
         />
       </MobileSidebar>
 
@@ -231,7 +245,6 @@ const DashboardPage = () => {
           activeMenuItem={activeMenuItem}
           handleNavigation={handleNavigation}
           menuItems={menuItems}
-          role={isAdmin ? 'admin' : 'user'} // Add the required role prop
         />
       </Sidebar>
 

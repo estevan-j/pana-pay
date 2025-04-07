@@ -4,11 +4,12 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import PrivateRoute from './components/PrivateRoute';
-import { AuthProvider } from './context/AuthContext';
+import KeycloakProvider from './context/KeycloakProvider';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 function App() {
   return (
-    <AuthProvider>
+    <KeycloakProvider>
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -21,10 +22,11 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
-    </AuthProvider>
+    </KeycloakProvider>
   );
 }
 
