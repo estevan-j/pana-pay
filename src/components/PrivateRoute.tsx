@@ -1,6 +1,4 @@
-
 import { ReactNode, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 interface PrivateRouteProps {
@@ -38,9 +36,6 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
     console.log('Not authenticated, returning null to allow redirect');
     return null;
   }
-
-  console.log('User is authenticated, rendering protected content');
-  // Si está autenticado, renderizar los componentes hijos
   return <>{children}</>;
 };
 
