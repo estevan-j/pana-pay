@@ -39,7 +39,7 @@ const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   const initOptions = {
     onLoad: 'login-required',
     checkLoginIframe: false,
-    enableLogging: true, // Enable Keycloak's internal logging
+    // enableLogging: true, // Enable Keycloak's internal logging
   };
 
   console.log('Initializing Keycloak with options:', initOptions);
