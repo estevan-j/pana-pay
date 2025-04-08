@@ -13,7 +13,6 @@ interface FormatDateOptions {
     hour12: boolean;
 }
 
-// Componentes separados para mejor legibilidad
 const LoadingState: React.FC = () => (
     <div className="text-center py-8">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#2c347c] border-r-transparent"></div>
@@ -153,7 +152,7 @@ const LogsTable: React.FC<{ logs: AuthLog[], formatDate: (date: string) => strin
             <thead className="bg-gray-50">
                 <tr>
                     <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Usuario
+                        Email
                     </th>
                     <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Fecha y Hora
@@ -194,7 +193,6 @@ const LogsTable: React.FC<{ logs: AuthLog[], formatDate: (date: string) => strin
     </div>
 );
 
-// Componente de paginación
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
@@ -251,10 +249,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                             <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                         </button>
 
-                        {/* Mostrar números de página - versión compacta para mejorar responsividad */}
                         {[...Array(totalPages)].map((_, index) => {
                             const pageNumber = index + 1;
-                            // Mostrar menos páginas en pantallas más pequeñas
                             if (
                                 pageNumber === 1 ||
                                 pageNumber === totalPages ||
@@ -276,7 +272,6 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                                 (pageNumber === currentPage - 2 && currentPage > 3) ||
                                 (pageNumber === currentPage + 2 && currentPage < totalPages - 2)
                             ) {
-                                // Puntos suspensivos para indicar páginas ocultas
                                 return (
                                     <span
                                         key={`ellipsis-${pageNumber}`}
@@ -312,36 +307,29 @@ const RegistrosPage: React.FC = () => {
     const { filteredLogs, loading, error, filterLogs, clearFilters } = useAuthLogs(user);
     const [isFiltering, setIsFiltering] = useState(false);
 
-    // Estado para la paginación
     const [currentPage, setCurrentPage] = useState(1);
-    const logsPerPage = 10; // Número de logs por página
+    const logsPerPage = 10;
 
-    // Calcular el total de páginas
     const totalPages = Math.max(1, Math.ceil(filteredLogs.length / logsPerPage));
 
-    // Asegurarse de que la página actual es válida
     React.useEffect(() => {
         if (currentPage > totalPages) {
             setCurrentPage(1);
         }
     }, [filteredLogs, totalPages, currentPage]);
 
-    // Obtener logs para la página actual
     const indexOfLastLog = currentPage * logsPerPage;
     const indexOfFirstLog = indexOfLastLog - logsPerPage;
     const currentLogs = filteredLogs.slice(indexOfFirstLog, indexOfLastLog);
 
-    // Función para cambiar de página
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
-        // Desplazar la vista hacia arriba
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     };
 
-    // Función para formatear fechas - memoizada para evitar recálculos
     const formatDate = useCallback((dateString: string) => {
         const options: FormatDateOptions = {
             year: 'numeric',
@@ -355,18 +343,16 @@ const RegistrosPage: React.FC = () => {
         return new Date(dateString).toLocaleDateString('es-ES', options);
     }, []);
 
-    // Función para manejar el filtrado
     const handleFilter = useCallback((params: { username?: string; startDate?: string; endDate?: string }) => {
         filterLogs(params);
         setIsFiltering(true);
-        setCurrentPage(1); // Reset a la primera página al aplicar filtros
+        setCurrentPage(1);
     }, [filterLogs]);
 
-    // Función para limpiar filtros
     const handleClearFilters = useCallback(() => {
         clearFilters();
         setIsFiltering(false);
-        setCurrentPage(1); // Reset a la primera página al limpiar filtros
+        setCurrentPage(1);
     }, [clearFilters]);
 
     return (
@@ -383,7 +369,6 @@ const RegistrosPage: React.FC = () => {
                             incluyendo información sobre la ubicación y dirección IP desde la que se realizaron los accesos.
                         </p>
 
-                        {/* Nota solo para móviles */}
                         <div className="block sm:hidden mb-4 p-3 bg-blue-50 rounded border border-blue-100">
                             <p className="text-xs text-blue-700">
                                 <span className="font-medium">Nota:</span> Desliza horizontalmente para ver todos los detalles de los registros.
@@ -416,7 +401,6 @@ const RegistrosPage: React.FC = () => {
                                 </div>
                                 <LogsTable logs={currentLogs} formatDate={formatDate} />
 
-                                {/* Componente de paginación */}
                                 {totalPages > 1 && (
                                     <Pagination
                                         currentPage={currentPage}
