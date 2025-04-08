@@ -1,27 +1,43 @@
 version: 0.1
 component: build
-timeoutInSeconds: 900
+timeoutInSeconds: 1200
 shell: bash
- 
 steps:
   - type: Command
     name: Instalar Node.js 20
     command: |
-      curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-      apt-get install -y nodejs
+      # Usar sudo para instalaciones
+      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+      # Verificar versión
       node -v
       npm -v
- 
+  - type: Command
+    name: Actualizar npm
+    command: |
+      # Actualizar npm a la última versión para evitar incompatibilidades
+      sudo npm install -g npm@latest
+      npm -v
   - type: Command
     name: Instalar dependencias
     command: |
+      # Limpiar cache de npm si hay problemas
+      npm cache clean --force
       npm install
- 
+    onFailure:
+      - type: Command
+        command: |
+          echo "Falló la instalación de dependencias, mostrando logs"
+          cat /root/.npm/_logs/*-debug-0.log | tail -n 50
   - type: Command
     name: Compilar aplicación con Vite
     command: |
       npm run build
- 
+    onFailure:
+      - type: Command
+        command: |
+          echo "Falló la compilación, mostrando logs"
+          cat npm-debug.log || echo "No se encontró npm-debug.log"
 outputArtifacts:
   - name: ReactBuildOutput
     type: BINARY
