@@ -1,22 +1,23 @@
 version: 0.1
 component: build
-timeoutInSeconds: 600
+timeoutInSeconds: 900
 shell: bash
  
 steps:
   - type: Command
-    name: Instalar Node.js 18
+    name: Instalar Node.js 20
     command: |
-      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
       apt-get install -y nodejs
       node -v
       npm -v
  
   - type: Command
-    name: Limpiar caché y preparar entorno
+    name: Limpiar caché y entorno
     command: |
       npm cache clean --force
       rm -rf node_modules package-lock.json
+      npm install -g npm@latest
  
   - type: Command
     name: Instalar dependencias
@@ -25,7 +26,7 @@ steps:
       npm rebuild esbuild
  
   - type: Command
-    name: Build Vite React App
+    name: Compilar aplicación Vite
     command: |
       npm run build
  
