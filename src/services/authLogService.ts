@@ -28,23 +28,29 @@ const getCountryFromIP = async (ip: string): Promise<string | null> => {
     }
   };
 
-
 export const logAuthAttempt = async (data: AuthAttemptData): Promise<void> => {
   try {
     const ip = await getClientIP();
     const country = await getCountryFromIP(ip);
     
+    // Ensure we use the email field correctly
+    const email = data.email || data.username || '';
+    
     // Insert directly into the auth_logs table
     const { error } = await supabase
-      .rpc('log_auth_attempt', {
-        email: data.username || data.email,
+      .from('auth_logs')
+      .insert([{
+        email: email,
         ip_address: ip,
-        country: country
-      });
+        country: country,
+        login_timestamp: new Date().toISOString()
+      }]);
     
     if (error) {
       throw error;
     }
+    
+    console.log('Authentication attempt logged successfully');
   } catch (error) {
     console.error('Error logging authentication attempt:', error);
   }
