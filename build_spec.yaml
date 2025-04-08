@@ -4,39 +4,57 @@ timeoutInSeconds: 1200
 shell: bash
 steps:
   - type: Command
+    name: Preparar entorno y mostrar información
+    command: |
+      # Mostrar información del sistema
+      echo "Información del sistema:"
+      uname -a
+      cat /etc/os-release
+  - type: Command
     name: Instalar Node.js 20
     command: |
-      # Usar sudo para instalaciones
-      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-      sudo apt-get install -y nodejs
-      # Verificar versión
+      echo "Instalando Node.js 20..."
+      curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      apt-get update && apt-get install -y nodejs
+      echo "Versión de Node.js instalada:"
       node -v
+      echo "Versión de NPM instalada:"
       npm -v
   - type: Command
-    name: Actualizar npm
+    name: Preparar entorno para esbuild
     command: |
-      # Actualizar npm a la última versión para evitar incompatibilidades
-      sudo npm install -g npm@latest
-      npm -v
-  - type: Command
-    name: Instalar dependencias
-    command: |
-      # Limpiar cache de npm si hay problemas
+      echo "Configurando variables de entorno para esbuild..."
+      # Establecer variables de entorno para evitar errores de esbuild
+      export ESBUILD_BINARY_PATH="/tmp/esbuild-binary"
+      export DISABLE_ESBUILD_DOWNLOAD=false
+      # Limpiar caché y node_modules para una instalación limpia
+      rm -rf node_modules package-lock.json
       npm cache clean --force
-      npm install
+  - type: Command
+    name: Instalar dependencias con gestión de esbuild
+    command: |
+      echo "Instalando dependencias..."
+      # Instalar esbuild primero
+      npm install esbuild@0.25.2 --save-dev
+      # Luego instalar el resto de dependencias
+      npm install --no-audit --no-fund
     onFailure:
       - type: Command
         command: |
-          echo "Falló la instalación de dependencias, mostrando logs"
-          cat /root/.npm/_logs/*-debug-0.log | tail -n 50
+          echo "Falló la instalación de dependencias, mostrando logs detallados"
+          ls -la node_modules || echo "No existe el directorio node_modules"
+          find . -name "esbuild" -type d | xargs ls -la || echo "No se encontró esbuild"
+          cat /root/.npm/_logs/*-debug-0.log | tail -n 100
   - type: Command
     name: Compilar aplicación con Vite
     command: |
+      echo "Compilando la aplicación..."
       npm run build
     onFailure:
       - type: Command
         command: |
           echo "Falló la compilación, mostrando logs"
+          ls -la dist || echo "No existe el directorio dist"
           cat npm-debug.log || echo "No se encontró npm-debug.log"
 outputArtifacts:
   - name: ReactBuildOutput
