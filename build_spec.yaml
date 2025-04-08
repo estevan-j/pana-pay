@@ -1,14 +1,17 @@
 version: 0.1
-steps:
-  - type: Command
-    name: Instalar dependencias
-    command: |
-      npm install
-  - type: Command
-    name: Construir app React
-    command: |
-      npm run build
-outputArtifacts:
-  - name: ReactBuildOutput
-    type: BINARY
-    location: ./build
+build:
+  steps:
+    - type: Command
+      name: Instalar dependencias
+      command: |
+        npm install
+ 
+    - type: Command
+      name: Construir app React
+      command: |
+        npm run build
+ 
+  outputArtifacts:
+    - name: ReactBuildOutput
+      type: BINARY
+      location: ./build
