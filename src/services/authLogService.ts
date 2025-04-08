@@ -37,14 +37,11 @@ export const logAuthAttempt = async (data: AuthAttemptData): Promise<void> => {
     const email = data.email || data.username || '';
     
     // Insert directly into the auth_logs table
-    const { error } = await supabase
-      .from('auth_logs')
-      .insert([{
-        email: email,
-        ip_address: ip,
-        country: country,
-        login_timestamp: new Date().toISOString()
-      }]);
+    const { error } = await supabase.rpc('log_auth_attempt', {
+      email: email,
+      ip_address: ip,
+      country: country
+    });
     
     if (error) {
       throw error;
