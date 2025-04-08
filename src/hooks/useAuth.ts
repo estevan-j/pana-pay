@@ -47,16 +47,15 @@ export const useAuth = () => {
     return [];
   }, [keycloak]);
 
+  // Use a single useEffect with proper dependencies to prevent multiple executions
   useEffect(() => {
-    const handleAuthenticationLogging = async () => {
-      // Only log the authentication if:
-      // 1. User is authenticated
-      // 2. Keycloak is initialized
-      // 3. We haven't logged this session yet
-      if (isAuthenticated && initialized && !authLogged.current) {
+    // Only log when both initialized and authenticated
+    if (initialized && isAuthenticated && !authLogged.current) {
+      const handleAuthenticationLogging = async () => {
         try {
           const userInfo = getUserInfo();
           if (userInfo?.email) {
+            console.log('Attempting to log authentication once');
             // Log the auth attempt
             await logAuthAttempt({ 
               email: userInfo.email,
@@ -69,11 +68,11 @@ export const useAuth = () => {
         } catch (error) {
           console.error('Error logging authentication attempt:', error);
         }
-      }
-    };
+      };
 
-    handleAuthenticationLogging();
-  }, [isAuthenticated, initialized, getUserInfo]);
+      handleAuthenticationLogging();
+    }
+  }, [initialized, isAuthenticated, getUserInfo]);
 
   const roles = getRoles();
   const isAdmin = roles.includes(import.meta.env.VITE_APP_ALLOWED_ROLE);

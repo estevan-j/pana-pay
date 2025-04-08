@@ -6,6 +6,10 @@ export interface AuthAttemptData {
   username?: string;
 }
 
+// Cache to prevent duplicate log entries
+const recentLogins = new Map<string, number>();
+const DUPLICATE_TIMEOUT_MS = 10000; // 10 seconds
+
 const getClientIP = async (): Promise<string> => {
   try {
     const response = await fetch('https://api.ipify.org?format=json');
@@ -30,15 +34,32 @@ const getCountryFromIP = async (ip: string): Promise<string | null> => {
 
 export const logAuthAttempt = async (data: AuthAttemptData): Promise<void> => {
   try {
-    const ip = await getClientIP();
-    const country = await getCountryFromIP(ip);
-    
     // Ensure we use the email field correctly
     const email = data.email || data.username || '';
     
+    // Check if this email was recently logged
+    const now = Date.now();
+    const lastLogTime = recentLogins.get(email);
+    
+    if (lastLogTime && (now - lastLogTime) < DUPLICATE_TIMEOUT_MS) {
+      console.log('Skipping duplicate auth log for:', email);
+      return;
+    }
+    
     console.log('Logging auth attempt for:', email);
     
-    // Insert directly into the auth_logs table using RPC to ensure proper DB-side handling
+    // Update the cache with current timestamp
+    recentLogins.set(email, now);
+    
+    // Clean up old entries from cache
+    setTimeout(() => {
+      recentLogins.delete(email);
+    }, DUPLICATE_TIMEOUT_MS);
+    
+    const ip = await getClientIP();
+    const country = await getCountryFromIP(ip);
+    
+    // Insert directly into the auth_logs table using RPC
     const { error } = await supabase.rpc('log_auth_attempt', {
       email: email,
       ip_address: ip,
