@@ -35,8 +35,9 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
     const fetchAuthLogs = async () => {
         try {
             setLoading(true);
+            console.log('Fetching auth logs...');
             
-            // Fetch logs from the auth_logs table
+            // Consulta directa a la tabla auth_logs
             const { data, error } = await supabase
                 .from('auth_logs')
                 .select('*')
@@ -55,6 +56,7 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
 
     useEffect(() => {
         let isMounted = true;
+        console.log('useAuthLogs hook initialized with username:', username);
         
         fetchAuthLogs();
 
@@ -63,15 +65,15 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
         };
     }, [username]);
 
-    // Apply filters locally
+    // Aplicar filtros localmente
     const filteredLogs = useMemo(() => {
         return logs.filter(log => {
-            // Filter by email (not username)
+            // Filtro por nombre de usuario
             if (filters.username && !log.email.toLowerCase().includes(filters.username.toLowerCase())) {
                 return false;
             }
             
-            // Filter by date
+            // Filtro por fecha
             if (filters.startDate || filters.endDate) {
                 const logDate = new Date(log.login_timestamp);
                 
@@ -82,7 +84,7 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
                 
                 if (filters.endDate) {
                     const endDate = new Date(filters.endDate);
-                    // Adjust to end of day
+                    // Ajustar al final del día
                     endDate.setHours(23, 59, 59, 999);
                     if (logDate > endDate) return false;
                 }
@@ -92,12 +94,12 @@ export const useAuthLogs = (username: string | null): UseAuthLogsResult => {
         });
     }, [logs, filters]);
 
-    // Function to apply filters
+    // Función para aplicar filtros
     const filterLogs = (params: FilterParams) => {
         setFilters(params);
     };
 
-    // Function to clear filters
+    // Función para limpiar filtros
     const clearFilters = () => {
         setFilters({});
     };
