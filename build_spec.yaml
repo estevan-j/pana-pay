@@ -5,9 +5,17 @@ shell: bash
  
 steps:
   - type: Command
+    name: Instalar Node.js 18
+    command: |
+      curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      apt-get install -y nodejs
+      node -v
+      npm -v
+ 
+  - type: Command
     name: Instalar dependencias
     command: |
-      npm ci
+      npm install
  
   - type: Command
     name: Build Vite React App
