@@ -13,20 +13,12 @@ steps:
       npm -v
  
   - type: Command
-    name: Limpiar caché y entorno
-    command: |
-      npm cache clean --force
-      rm -rf node_modules package-lock.json
-      npm install -g npm@latest
- 
-  - type: Command
     name: Instalar dependencias
     command: |
       npm install
-      npm rebuild esbuild
  
   - type: Command
-    name: Compilar aplicación Vite
+    name: Compilar aplicación con Vite
     command: |
       npm run build
  
