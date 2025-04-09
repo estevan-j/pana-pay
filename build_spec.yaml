@@ -11,18 +11,11 @@ steps:
       npm -v
       
   - type: Command
-    name: Instalar dependencias con resolución de esbuild
+    name: Instalar dependencias sin lovable-tagger
     command: |
-      echo "Instalando dependencias con manejo especial para esbuild..."
-      
-      # Primero instalar sin esbuild para evitar errores iniciales
+      echo "Instalando dependencias y removiendo paquete problemático..."
       npm install --ignore-scripts --no-audit --legacy-peer-deps
-      
-      # Arreglar el problema de esbuild específicamente
-      echo "Arreglando el problema de esbuild..."
-      find . -name "esbuild" -type d -exec bash -c 'cd "{}/.." && npm uninstall esbuild && npm install esbuild@0.21.5 --no-save' \;
-      
-      # Completar la instalación
+      npm uninstall lovable-tagger --force
       npm install --force --legacy-peer-deps --no-audit
     
   - type: Command
