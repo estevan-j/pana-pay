@@ -1,11 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-
   server: {
     host: "::",
     port: 8080,
@@ -13,15 +11,14 @@ export default defineConfig(({ mode }) => ({
       "/auth": {
         target: "https://129.153.38.200.nip.io",
         changeOrigin: true,
-        secure: false, // Cambia a true si el certificado SSL es válido
+        secure: false,
       },
     },
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+    // componentTagger se ha eliminado para compatibilidad con entornos de build
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -29,5 +26,8 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
+  },
+  build: {
+    outDir: 'dist'
   }
 }));
