@@ -11,9 +11,34 @@ steps:
       npm -v
       
   - type: Command
-    name: Instalar dependencias sin lovable-tagger
+    name: Crear configuración simplificada
     command: |
-      echo "Instalando dependencias y removiendo paquete problemático..."
+      echo "Creando un archivo vite.config.ts simplificado..."
+      # Hacer backup del original
+      if [ -f "vite.config.ts" ]; then
+        cp vite.config.ts vite.config.ts.original
+      fi
+      
+      # Crear una configuración básica sin lovable-tagger
+      cat > vite.config.ts << 'EOF'
+      import { defineConfig } from 'vite'
+      import react from '@vitejs/plugin-react'
+      
+      // https://vitejs.dev/config/
+      export default defineConfig({
+        plugins: [react()],
+        build: {
+          outDir: 'dist'
+        }
+      })
+      EOF
+      
+      echo "Nueva configuración de Vite creada"
+      
+  - type: Command
+    name: Instalar dependencias
+    command: |
+      echo "Instalando dependencias sin paquetes problemáticos..."
       npm install --ignore-scripts --no-audit --legacy-peer-deps
       npm uninstall lovable-tagger --force
       npm install --force --legacy-peer-deps --no-audit
