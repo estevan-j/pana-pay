@@ -22,7 +22,7 @@ steps:
     name: Compilar aplicación
     command: |
       echo "Compilando aplicación React..."
-      NODE_OPTIONS=--openssl-legacy-provider npm run build
+      npm run build
     onFailure:
       - type: Command
         command: |
