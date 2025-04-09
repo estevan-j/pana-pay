@@ -78,6 +78,7 @@ steps:
       npm run build
     onFailure:
       - type: Command
+        name: Crear directorio de fallback
         command: |
           echo "La compilación falló. Creando directorio dist con página básica."
           mkdir -p dist
