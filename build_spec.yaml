@@ -4,31 +4,21 @@ timeoutInSeconds: 900
 shell: bash
 steps:
   - type: Command
-    name: Instalar Node.js 20
+    name: Verificar versión de Node.js
     command: |
-      echo "Instalando Node.js 20..."
-      # Método para Oracle Linux usando curl y binarios precompilados
-      curl -sL https://nodejs.org/dist/v20.12.2/node-v20.12.2-linux-x64.tar.gz -o nodejs.tar.gz
-      mkdir -p /usr/local/nodejs
-      tar -zxf nodejs.tar.gz -C /usr/local/nodejs --strip-components=1
-      export PATH=/usr/local/nodejs/bin:$PATH
-      # Verificar instalación
+      echo "Verificando versión de Node.js instalada..."
       node -v
       npm -v
       
   - type: Command
     name: Instalar dependencias
     command: |
-      # Usar la nueva instalación de Node
-      export PATH=/usr/local/nodejs/bin:$PATH
       echo "Instalando dependencias..."
       npm ci
     
   - type: Command
     name: Compilar aplicación
     command: |
-      # Usar la nueva instalación de Node
-      export PATH=/usr/local/nodejs/bin:$PATH
       echo "Compilando aplicación React..."
       npm run build
     onFailure:
