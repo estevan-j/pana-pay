@@ -11,23 +11,25 @@ steps:
       npm -v
       
   - type: Command
-    name: Instalar dependencias
+    name: Instalar dependencias con resolución de esbuild
     command: |
-      echo "Instalando dependencias..."
-      # Usar --force y --legacy-peer-deps para resolver problemas de compatibilidad
-      npm install --force --legacy-peer-deps
-      # Si falla, intentar con una limpieza del caché
-      if [ $? -ne 0 ]; then
-        echo "Primer intento fallido, limpiando caché e intentando nuevamente..."
-        npm cache clean --force
-        npm install --force --legacy-peer-deps --no-audit
-      fi
+      echo "Instalando dependencias con manejo especial para esbuild..."
+      
+      # Primero instalar sin esbuild para evitar errores iniciales
+      npm install --ignore-scripts --no-audit --legacy-peer-deps
+      
+      # Arreglar el problema de esbuild específicamente
+      echo "Arreglando el problema de esbuild..."
+      find . -name "esbuild" -type d -exec bash -c 'cd "{}/.." && npm uninstall esbuild && npm install esbuild@0.21.5 --no-save' \;
+      
+      # Completar la instalación
+      npm install --force --legacy-peer-deps --no-audit
     
   - type: Command
     name: Compilar aplicación
     command: |
       echo "Compilando aplicación React..."
-      npm run build
+      NODE_OPTIONS=--openssl-legacy-provider npm run build
     onFailure:
       - type: Command
         command: |
