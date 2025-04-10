@@ -82,6 +82,13 @@ steps:
       npm install --ignore-scripts --no-audit --legacy-peer-deps
       
   - type: Command
+    name: Depurar ambiente
+    command: |
+      echo "Depurando variables y directorio de trabajo..."
+      echo "Directorio actual: $(pwd)"
+      echo "Listado de archivos: $(ls -la)"
+      
+  - type: Command
     name: Compilar aplicación
     command: |
       echo "Compilando aplicación React..."
@@ -110,8 +117,24 @@ steps:
     command: |
       echo "Configurando permisos para los artefactos de salida..."
       chmod -R 755 dist
+      # Asegurar que los archivos específicos tengan los permisos correctos
+      find dist -type f -name "*.js" -exec chmod 644 {} \;
+      find dist -type f -name "*.html" -exec chmod 644 {} \;
+      find dist -type f -name "*.css" -exec chmod 644 {} \;
+      find dist -type f -name "*.webp" -exec chmod 644 {} \;
+      find dist -type f -name "*.json" -exec chmod 644 {} \;
+      find dist -type f -name "*.ico" -exec chmod 644 {} \;
         
+  - type: Command
+    name: Preparar artefacto
+    command: |
+      echo "Preparando artefacto para guardado..."
+      # Comprimir el directorio dist para facilitar su transferencia
+      tar -czf dist.tar.gz dist/
+      # Verificar que el archivo se creó correctamente
+      ls -la dist.tar.gz
+
 outputArtifacts:
   - name: ReactBuildOutput
     type: BINARY
-    location: ${OCI_PRIMARY_SOURCE_DIR}/dist
+    location: dist.tar.gz
