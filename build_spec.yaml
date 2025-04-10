@@ -104,8 +104,14 @@ steps:
       fi
       # Verificar contenido
       ls -la dist
+      
+  - type: Command
+    name: Fijar permisos de artefactos
+    command: |
+      echo "Configurando permisos para los artefactos de salida..."
+      chmod -R 755 dist
         
 outputArtifacts:
   - name: ReactBuildOutput
     type: BINARY
-    location: dist
+    location: ${OCI_PRIMARY_SOURCE_DIR}/dist
