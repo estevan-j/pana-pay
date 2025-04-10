@@ -67,15 +67,17 @@ steps:
     name: Instalar dependencias
     command: |
       echo "Instalando dependencias sin paquetes problemáticos..."
+      # Remove problematic package from package.json first
+      npx json -I -f package.json -e "if(this.dependencies['lovable-tagger']) delete this.dependencies['lovable-tagger']"
+      npx json -I -f package.json -e "if(this.devDependencies['lovable-tagger']) delete this.devDependencies['lovable-tagger']"
+      # Clean install without the problematic package
+      rm -rf node_modules
       npm install --ignore-scripts --no-audit --legacy-peer-deps
-      npm uninstall lovable-tagger --force
-      npm install --force --legacy-peer-deps --no-audit
-    
   - type: Command
     name: Compilar aplicación
     command: |
       echo "Compilando aplicación React..."
-      npm run build
+      npm run build || { echo "Build failed with error code $?"; exit 1; }
     onFailure:
       - type: Command
         name: Crear directorio de fallback
