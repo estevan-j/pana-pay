@@ -5,12 +5,14 @@ import { useEffect, useCallback, useRef } from 'react';
 
 export const useAuth = () => {
   const { keycloak, initialized } = useKeycloak();
-  // Add a ref to track if we've already logged this session
+  // Use ref to track if we've already logged this session
   const authLogged = useRef(false);
 
   const isAuthenticated = keycloak?.authenticated || false;
 
   const login = useCallback(() => {
+    // Reset the auth logged flag when initiating a new login
+    authLogged.current = false;
     return keycloak.login({
       redirectUri: window.location.origin
     });
@@ -47,22 +49,24 @@ export const useAuth = () => {
     return [];
   }, [keycloak]);
 
-  // Use a single useEffect with proper dependencies to prevent multiple executions
+  // Use a single useEffect with strict condition to prevent multiple logs
   useEffect(() => {
-    // Only log when both initialized and authenticated
+    // Only log when both initialized and authenticated and not logged yet
     if (initialized && isAuthenticated && !authLogged.current) {
       const handleAuthenticationLogging = async () => {
         try {
           const userInfo = getUserInfo();
           if (userInfo?.email) {
             console.log('Attempting to log authentication once');
+            // Set the flag before logging to prevent race conditions
+            authLogged.current = true;
+            
             // Log the auth attempt
             await logAuthAttempt({ 
               email: userInfo.email,
               username: userInfo.username 
             });
-            // Mark this session as logged
-            authLogged.current = true;
+            
             console.log('Authentication logged successfully');
           } 
         } catch (error) {

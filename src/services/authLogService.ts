@@ -6,9 +6,9 @@ export interface AuthAttemptData {
   username?: string;
 }
 
-// Cache to prevent duplicate log entries
+// Global cache to prevent duplicate log entries
 const recentLogins = new Map<string, number>();
-const DUPLICATE_TIMEOUT_MS = 10000; // 10 seconds
+const DUPLICATE_TIMEOUT_MS = 30000; // 30 seconds - increased to handle longer page sessions
 
 const getClientIP = async (): Promise<string> => {
   try {
@@ -48,12 +48,14 @@ export const logAuthAttempt = async (data: AuthAttemptData): Promise<void> => {
     
     console.log('Logging auth attempt for:', email);
     
-    // Update the cache with current timestamp
+    // Update the cache IMMEDIATELY with current timestamp to prevent race conditions
     recentLogins.set(email, now);
     
-    // Clean up old entries from cache
+    // Clean up old entries from cache after timeout
     setTimeout(() => {
-      recentLogins.delete(email);
+      if (recentLogins.get(email) === now) { // Only clear if it hasn't been updated
+        recentLogins.delete(email);
+      }
     }, DUPLICATE_TIMEOUT_MS);
     
     const ip = await getClientIP();
@@ -69,8 +71,6 @@ export const logAuthAttempt = async (data: AuthAttemptData): Promise<void> => {
     if (error) {
       throw error;
     }
-    
-    console.log('Authentication attempt logged successfully');
   } catch (error) {
     console.error('Error logging authentication attempt:', error);
   }
