@@ -66,6 +66,13 @@ const HistorialCambiosPage: React.FC = () => {
                         <td>QR</td>
                         <td>Informacio QR</td>
                       </tr>
+                      <tr>
+                        <td>15//2025</td>
+                        <td>Esteban Bajaña</td>
+                        <td>1.7</td>
+                        <td>Cambios en: desafiliacion por Número de cuenta y Tipo de cuenta, consulta status  se añadio en la respuesta el campo globalStatus(GlobalTxSts).</td>
+                        <td>Desafiliación, Consulta Status</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>

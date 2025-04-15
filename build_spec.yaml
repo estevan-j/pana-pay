@@ -136,6 +136,5 @@ steps:
 
 outputArtifacts:
   - name: ReactBuildOutput
-    type: GENERAL_ARTIFACT
-    location: dist
-    
+    type: BINARY
+    location: dist.tar.gz

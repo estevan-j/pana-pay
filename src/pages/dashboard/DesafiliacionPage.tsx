@@ -114,10 +114,10 @@ const DesafiliacionPage: React.FC = () => {
                     </tr>
                     <tr>
                       <td>BlkUser\acct\AcctId</td>
-                      <td>IBAN2007Identifier</td>
-                      <td>24</td>
+                      <td>Max35Text</td>
+                      <td>35</td>
                       <td>SI</td>
-                      <td>Llave única del usuario</td>
+                      <td>Número de Cuenta</td>
                       <td></td>
                       <td></td>
                     </tr>
@@ -127,8 +127,8 @@ const DesafiliacionPage: React.FC = () => {
                       <td>2</td>
                       <td>SI</td>
                       <td>TIpo de Cuenta</td>
-                      <td></td>
-                      <td></td>
+                      <td>10</td>
+                      <td>Anexo 1 - AccountTypes</td>
                     </tr>
                     <tr>
                       <td>BlkUser\CtrlInf\ActnTp</td>

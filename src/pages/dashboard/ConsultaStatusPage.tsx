@@ -192,6 +192,15 @@ const ConsultaStatusPage: React.FC = () => {
                       <td>Anexo 1 - StatusTypeCode</td>
                     </tr>
                     <tr>
+                      <td>CdtTrfTxInf\GlobalTxSts</td>
+                      <td>Max12Text</td>
+                      <td>12</td>
+                      <td>Si</td>
+                      <td>Estatus Global de la transacción (OK - ERR)</td>
+                      <td>OK</td>
+                      <td></td>
+                    </tr>
+                    <tr>
                       <td>CdtTrfTxInf\Rsn\RsnCd</td>
                       <td>Max4Text</td>
                       <td>4</td>
